@@ -11,7 +11,7 @@ Week 5
 - Sen Fu & Yue Zhou
   Adding login & register class  to our app
 
-- Xinyun Cai
+- Qinyun Cai
   Adding profile feature to our app based on the login info
 
 *************************************************************************
@@ -32,7 +32,7 @@ Week 6
 - Sen Fu & Yue Zhou
   Finish doing the login & register class
 
-- Xinyun Cai
+- Qinyun Cai
   Finish the profile class based on the login info
 
 *************************************************************************
@@ -56,7 +56,7 @@ Week 7
    
   Debugging login & register class
 
-- Xinyun Cai
+- Qinyun Cai
 
   Debugging profile class
 
@@ -80,7 +80,7 @@ Week 8
 
   Prepare for the second demo
 
-- Xinyun Cai
+- Qinyun Cai
  
   Prepare for the second demo
 
@@ -105,7 +105,7 @@ Week 9
 
   Presentation
 
-- Xinyun Cai
+- Qinyun Cai
 
    Presentation
 
