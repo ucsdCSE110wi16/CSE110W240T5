@@ -30,13 +30,6 @@ import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 
 import java.util.HashMap;
 
@@ -104,7 +97,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     public void showAround(View V){
 
-        final HashMap Resturants = new HashMap();
+        final HashMap<CharSequence, Place> Restaurants = new HashMap<CharSequence, Place>();
+
+        Intent intent = new Intent(this, ShowRest.class);
 
         PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
                 .getCurrentPlace(mGoogleApiClient, null);
@@ -116,12 +111,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         Log.i(TAG, String.format("Place '%s' has likelihood: %g",
                                 placeLikelihood.getPlace().getName(),
                                 placeLikelihood.getLikelihood()));
-                                Resturants.put(placeLikelihood.getPlace().getName(), placeLikelihood.getPlace());
+                                Restaurants.put(placeLikelihood.getPlace().getName(), placeLikelihood.getPlace());
                     }
                 }
                 likelyPlaces.release();
             }
         });
+
+        intent.putExtra("map", Restaurants);
+        startActivity(intent);
+
 
     }
 
@@ -149,10 +148,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         Toast.LENGTH_LONG)
                         .show();
             }
-
-
-
-
 
 
             // END_INCLUDE(intent)
@@ -192,7 +187,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 intent.putExtra(Add, address);
                 intent.putExtra(Rate, rating);
                 startActivity(intent);
-
 
                 // Print data to debug log
                 Log.d(TAG, "Place selected: " + placeId + " (" + name.toString() + ")");

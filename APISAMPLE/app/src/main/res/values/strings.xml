@@ -2,4 +2,5 @@
     <string name="app_name">API SAMPLE</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_display_places">DisplayPlacesActivity</string>
+    <string name="title_activity_show_rest">ShowRest</string>
 </resources>

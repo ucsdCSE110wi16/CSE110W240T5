@@ -3,16 +3,13 @@ package course.hello.shaun.apisample;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,14 +23,11 @@ public class DisplayPlacesActivity extends ActionBarActivity {
         String name =  intent.getStringExtra(MainActivity.Name);
         TextView textView = new TextView(this);
         textView.setTextSize(40);
+        name =  name+ "\n"+intent.getStringExtra(MainActivity.Add);
         textView.setText(name);
-        String add =  intent.getStringExtra(MainActivity.Name);
-        TextView textadd = new TextView(this);
-        textView.setTextSize(40);
-        textView.setText(add);
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.content);
         layout.addView(textView);
-        layout.addView(textadd);
+
         //setContentView(textView);
 
     }
