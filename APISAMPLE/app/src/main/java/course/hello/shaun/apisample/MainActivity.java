@@ -38,6 +38,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
@@ -102,6 +103,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     public void showAround(View V){
+
+        final HashMap Resturants = new HashMap();
+
         PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
                 .getCurrentPlace(mGoogleApiClient, null);
         result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
@@ -112,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         Log.i(TAG, String.format("Place '%s' has likelihood: %g",
                                 placeLikelihood.getPlace().getName(),
                                 placeLikelihood.getLikelihood()));
+                                Resturants.put(placeLikelihood.getPlace().getName(), placeLikelihood.getPlace());
                     }
                 }
                 likelyPlaces.release();
@@ -144,6 +149,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         Toast.LENGTH_LONG)
                         .show();
             }
+
+
 
 
 

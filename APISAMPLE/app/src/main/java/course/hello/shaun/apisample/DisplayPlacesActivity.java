@@ -21,18 +21,21 @@ public class DisplayPlacesActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.content_display_places);
         Intent intent = getIntent();
         String name =  intent.getStringExtra(MainActivity.Name);
         TextView textView = new TextView(this);
         textView.setTextSize(40);
         textView.setText(name);
-        setContentView(textView);
-
-        /*String add =  intent.getStringExtra(MainActivity.Add);
-        TextView textView2 = new TextView(this);
-        textView.setTextSize(20);
+        String add =  intent.getStringExtra(MainActivity.Name);
+        TextView textadd = new TextView(this);
+        textView.setTextSize(40);
         textView.setText(add);
-        setContentView(textView2);*/
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.content);
+        layout.addView(textView);
+        layout.addView(textadd);
+        //setContentView(textView);
+
     }
 
     @Override
