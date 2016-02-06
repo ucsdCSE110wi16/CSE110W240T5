@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public final static String Price = "course.hello.shaun.Demo.Price";
     public GoogleApiClient mGoogleApiClient;
     public static final int TYPE_RESTAURANT = 79;
+    public HashMap<String, Place> Restaurants = new HashMap<>();
 
     /**
      * Request code passed to the PlacePicker intent to identify its result when it returns.
@@ -62,10 +63,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
-
-
-
-
     }
 
     @Override
@@ -97,30 +94,32 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     public void showAround(View V){
 
-        final HashMap<CharSequence, Place> Restaurants = new HashMap<CharSequence, Place>();
-
         Intent intent = new Intent(this, ShowRest.class);
 
         PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
                 .getCurrentPlace(mGoogleApiClient, null);
+
+
         result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
             @Override
             public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
                 for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-                    if(placeLikelihood.getPlace().getPlaceTypes().contains(TYPE_RESTAURANT)) {
+                    if (placeLikelihood.getPlace().getPlaceTypes().contains(TYPE_RESTAURANT)) {
                         Log.i(TAG, String.format("Place '%s' has likelihood: %g",
                                 placeLikelihood.getPlace().getName(),
                                 placeLikelihood.getLikelihood()));
-                                Restaurants.put(placeLikelihood.getPlace().getName(), placeLikelihood.getPlace());
+                        Restaurants.put(placeLikelihood.getPlace().getName().toString(), placeLikelihood.getPlace());
+                        Log.v("inside ", "" + Restaurants.isEmpty()+" "+Restaurants.size());
                     }
                 }
+
                 likelyPlaces.release();
             }
         });
 
+        Log.v("size", "" + Restaurants.isEmpty());
         intent.putExtra("map", Restaurants);
         startActivity(intent);
-
 
     }
 
@@ -148,9 +147,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         Toast.LENGTH_LONG)
                         .show();
             }
-
-
-            // END_INCLUDE(intent)
         }
 
     @Override
@@ -193,7 +189,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
 
             } else {
-
                 Log.d(TAG, "Nothing man.");
             }
 
@@ -202,7 +197,5 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }
         // END_INCLUDE(activity_result)
     }
-
-
 
 }

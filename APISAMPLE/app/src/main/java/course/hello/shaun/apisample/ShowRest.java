@@ -27,15 +27,13 @@ public class ShowRest extends AppCompatActivity {
         setContentView(R.layout.content_show_rest);
         Intent intent = getIntent();
 
-
-
-        HashMap<CharSequence, Place> hashMap = (HashMap<CharSequence, Place>)intent.getSerializableExtra("map");
-        Log.i(TAG, String.format("Showtest test"+hashMap.size()));
+        HashMap<String, Place> hashMap = (HashMap<String, Place>)intent.getSerializableExtra("map");
+        Log.i(TAG, String.format("Showtest test "+hashMap.size()));
         String resturants = "";
-        for (HashMap.Entry<CharSequence, Place> entry : hashMap.entrySet())
+        for (HashMap.Entry<String, Place> entry : hashMap.entrySet())
         {
             resturants+=entry.getKey() + "\n";
-            Log.i(TAG, String.format(resturants));
+            Log.i(TAG, String.format(resturants+entry.getKey()));
         }
         //TextView textView = new TextView(this);
         TextView testView = new TextView(this);
