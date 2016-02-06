@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public GoogleApiClient mGoogleApiClient;
     public static final int TYPE_RESTAURANT = 79;
     public HashMap<String, Place> Restaurants = new HashMap<>();
+    public String restNames ="";
 
     /**
      * Request code passed to the PlacePicker intent to identify its result when it returns.
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     public void showAround(View V){
 
-        Intent intent = new Intent(this, ShowRest.class);
+        final Intent intent = new Intent(this, ShowRest.class);
 
         PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
                 .getCurrentPlace(mGoogleApiClient, null);
@@ -109,7 +110,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                                 placeLikelihood.getPlace().getName(),
                                 placeLikelihood.getLikelihood()));
                         Restaurants.put(placeLikelihood.getPlace().getName().toString(), placeLikelihood.getPlace());
-                        Log.v("inside ", "" + Restaurants.isEmpty()+" "+Restaurants.size());
+                        restNames += "\n" + placeLikelihood.getPlace().getName().toString();
+                        Log.v("inside ", "" + Restaurants.isEmpty() + " " + Restaurants.size());
+                        intent.putExtra("restNames", restNames);
+                        startActivity(intent);
                     }
                 }
 
@@ -118,8 +122,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         });
 
         Log.v("size", "" + Restaurants.isEmpty());
-        intent.putExtra("map", Restaurants);
-        startActivity(intent);
+        //intent.putExtra("map", Restaurants);
+        //startActivity(intent);
+
 
     }
 
@@ -154,7 +159,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         // BEGIN_INCLUDE(activity_result)
         if (requestCode == REQUEST_PLACE_PICKER) {
             // This result is from the PlacePicker dialog.
-
 
             if (resultCode == Activity.RESULT_OK) {
                 /* User has picked a place, extract data.
