@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public final static String Add = "course.hello.shaun.Demo.Add";
     public final static String Rate = "course.hello.shaun.Demo.Rate";
     public final static String Price = "course.hello.shaun.Demo.Price";
+    public GoogleApiClient mGoogleApiClient;
     public static final int TYPE_RESTAURANT = 79;
 
     /**
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        GoogleApiClient mGoogleApiClient = new GoogleApiClient
+                mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
@@ -69,21 +70,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .build();
 
 
-        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
-                .getCurrentPlace(mGoogleApiClient, null);
-        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
-            @Override
-            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
-                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-                    if(placeLikelihood.getPlace().getPlaceTypes().contains(TYPE_RESTAURANT)) {
-                        Log.i(TAG, String.format("Place '%s' has likelihood: %g",
-                                placeLikelihood.getPlace().getName(),
-                                placeLikelihood.getLikelihood()));
-                    }
-                }
-                likelyPlaces.release();
-            }
-        });
+
 
     }
 
@@ -114,6 +101,25 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         return super.onOptionsItemSelected(item);
     }
 
+    public void showAround(View V){
+        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
+                .getCurrentPlace(mGoogleApiClient, null);
+        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
+            @Override
+            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
+                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
+                    if(placeLikelihood.getPlace().getPlaceTypes().contains(TYPE_RESTAURANT)) {
+                        Log.i(TAG, String.format("Place '%s' has likelihood: %g",
+                                placeLikelihood.getPlace().getName(),
+                                placeLikelihood.getLikelihood()));
+                    }
+                }
+                likelyPlaces.release();
+            }
+        });
+
+    }
+
     public void showPlaces(View V) {
 
             // BEGIN_INCLUDE(intent)
@@ -138,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         Toast.LENGTH_LONG)
                         .show();
             }
+
 
 
 
