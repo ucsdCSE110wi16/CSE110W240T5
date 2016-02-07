@@ -31,6 +31,14 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 
 
@@ -64,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
+
     }
 
     @Override
@@ -122,14 +131,41 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         });
 
         Log.v("size", "" + Restaurants.isEmpty());
-        //intent.putExtra("map", Restaurants);
-        //startActivity(intent);
+
+        String json = null;
+
+
+        try {
+            String url = "https://maps.googleapis.com/maps/api/place/textsearch/output?parameters";
+            URL urls = new URL(url);
+            HttpURLConnection urlConnection = (HttpURLConnection) urls.openConnection();
+
+            InputStream in = urlConnection.getInputStream();
+            InputStreamReader isr = new InputStreamReader(in);
+
+            BufferedReader reader = new BufferedReader(isr);
+
+            StringBuilder builder = new StringBuilder();
+            String line;
+            while((line = reader.readLine()) != null){
+
+                builder.append(line+"\n");
+
+            }
+            reader.close();
+
+        } catch (IllegalStateException e3) {
+            Log.e("IllegalStateException", e3.toString());
+            e3.printStackTrace();
+        } catch (IOException e4) {
+            Log.e("IOException", e4.toString());
+            e4.printStackTrace();
+        }
 
 
     }
 
     public void showPlaces(View V) {
-
             // BEGIN_INCLUDE(intent)
             /* Use the PlacePicker Builder to construct an Intent.
             Note: This sample demonstrates a basic use case.
