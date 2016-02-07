@@ -153,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
             }
             reader.close();
+            json = builder.toString();
 
         } catch (IllegalStateException e3) {
             Log.e("IllegalStateException", e3.toString());
