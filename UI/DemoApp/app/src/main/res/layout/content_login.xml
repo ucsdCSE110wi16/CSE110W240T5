@@ -11,27 +11,28 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.xu.shawn.demoapp.LoginActivity"
     tools:showIn="@layout/activity_login"
-    android:background="@drawable/thumbnail"
+
     android:orientation="vertical"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="@drawable/thumbnail">
 
 
     <!-- Login progress -->
-    <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone"
-        android:background="#75ffffff" />
+    <!--<ProgressBar-->
+        <!--android:id="@+id/login_progress"-->
+        <!--style="?android:attr/progressBarStyleLarge"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:visibility="gone"-->
+        <!--android:background="#75ffffff" />-->
 
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="false"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="0.10">
 
         <LinearLayout
