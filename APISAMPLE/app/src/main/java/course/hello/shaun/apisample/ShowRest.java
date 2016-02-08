@@ -42,9 +42,6 @@ public class ShowRest extends AppCompatActivity {
         testView.setText(restNames);
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.rt);
         layout.addView(testView);
-
-
-
     }
 
 }

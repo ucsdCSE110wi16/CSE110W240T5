@@ -27,9 +27,7 @@ public class DisplayPlacesActivity extends ActionBarActivity {
         textView.setText(name);
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.content);
         layout.addView(textView);
-
         //setContentView(textView);
-
     }
 
     @Override

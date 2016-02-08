@@ -1,6 +1,10 @@
 package course.hello.shaun.apisample;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,11 +15,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -24,21 +24,22 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
 
 
@@ -55,9 +56,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public HashMap<String, Place> Restaurants = new HashMap<>();
     public String restNames ="";
 
-    /**
-     * Request code passed to the PlacePicker intent to identify its result when it returns.
-     */
     private static final int REQUEST_PLACE_PICKER = 1;
 
     @Override
@@ -68,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         setSupportActionBar(toolbar);
                 mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
+                        .addApi(LocationServices.API)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
@@ -109,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
                 .getCurrentPlace(mGoogleApiClient, null);
 
-
         result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
             @Override
             public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
@@ -125,53 +123,42 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         startActivity(intent);
                     }
                 }
-
                 likelyPlaces.release();
             }
         });
 
         Log.v("size", "" + Restaurants.isEmpty());
 
-        String json = null;
+        //LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        // Acquire a reference to the system Location Manager
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
 
-        try {
-            String url = "https://maps.googleapis.com/maps/api/place/textsearch/output?parameters";
-            URL urls = new URL(url);
-            HttpURLConnection urlConnection = (HttpURLConnection) urls.openConnection();
-
-            InputStream in = urlConnection.getInputStream();
-            InputStreamReader isr = new InputStreamReader(in);
-
-            BufferedReader reader = new BufferedReader(isr);
-
-            StringBuilder builder = new StringBuilder();
-            String line;
-            while((line = reader.readLine()) != null){
-
-                builder.append(line+"\n");
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+                Log.v("location", ""+location.getLatitude());
 
             }
-            reader.close();
-            json = builder.toString();
 
-        } catch (IllegalStateException e3) {
-            Log.e("IllegalStateException", e3.toString());
-            e3.printStackTrace();
-        } catch (IOException e4) {
-            Log.e("IOException", e4.toString());
-            e4.printStackTrace();
-        }
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
 
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+        };
+
+        // Register the listener with the Location Manager to receive location updates
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (android.location.LocationListener) locationListener);
+
+        new GetJson().execute("https://maps.googleapis.com/maps/api/place/textsearch/xml?query=restaurants+in+Sydney&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM");
 
     }
 
     public void showPlaces(View V) {
             // BEGIN_INCLUDE(intent)
-            /* Use the PlacePicker Builder to construct an Intent.
-            Note: This sample demonstrates a basic use case.
-            The PlacePicker Builder supports additional properties such as search bounds.
-             */
+
             try {
                 PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
                 Intent intent = intentBuilder.build(this);
@@ -216,8 +203,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 if(attribution == null){
                     attribution = "";
                 }
-
-
                 Intent intent = new Intent(this, DisplayPlacesActivity.class);
 
                 intent.putExtra(Name,name);
@@ -239,4 +224,51 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         // END_INCLUDE(activity_result)
     }
 
+}
+
+class GetJson extends AsyncTask<String, Void, JSONObject> {
+
+    private Exception exception;
+
+    protected JSONObject doInBackground(String... params) {
+
+        String json = null;
+        try {
+            //String url = "https://maps.googleapis.com/maps/api/place/radarsearch/json?location=51.503186,-0.126446&radius=5000&types=museum&key=YOUR_API_KEY";
+            URL urls= new URL(params[0]);
+            //URL urls = new URL(url);
+            HttpURLConnection urlConnection = (HttpURLConnection) urls.openConnection();
+
+            InputStream in = urlConnection.getInputStream();
+            InputStreamReader isr = new InputStreamReader(in);
+
+            BufferedReader reader = new BufferedReader(isr);
+
+            StringBuilder builder = new StringBuilder();
+            String line;
+            while((line = reader.readLine()) != null){
+                builder.append(line+"\n");
+            }
+            reader.close();
+            json = builder.toString();
+            Log.v("json ", json);
+
+        } catch (IllegalStateException e1) {
+            Log.e("IllegalStateException", e1.toString());
+            e1.printStackTrace();
+        } catch (IOException e2) {
+            Log.e("IOException", e2.toString());
+            e2.printStackTrace();
+        } catch(Exception e3) {
+            Log.e("Exception", e3.toString());
+            e3.printStackTrace();
+        }
+        JSONObject jsonObject =  new JSONObject();
+        return jsonObject;
+    }
+
+    protected void onPostExecute(JSONObject json) {
+        // TODO: check this.exception
+        // TODO: do something with the feed
+    }
 }
