@@ -25,7 +25,6 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-//import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceLikelihood;
@@ -136,10 +135,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
 
-        LocationListener locationListener = new LocationListener() {
+        android.location.LocationListener locationListener = new android.location.LocationListener() {
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
-                Log.v("location", ""+location.getLatitude());
+                Log.v("location lat", ""+location.getLatitude());
+                Log.v("location long", ""+location.getLongitude());
 
             }
 
