@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class PreferenceActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button btnGoChooseOne;
+    private Button btnGoPre2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +18,8 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        btnGoChooseOne = (Button)findViewById(R.id.button);
-        btnGoChooseOne.setOnClickListener(this);
+        btnGoPre2 = (Button)findViewById(R.id.btnNext);
+        btnGoPre2.setOnClickListener(this);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -33,7 +33,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(this, ChooseOneActivity.class);
+        Intent intent = new Intent(this, Preference2Activity.class);
         if (intent != null) {
             startActivity(intent);
         }

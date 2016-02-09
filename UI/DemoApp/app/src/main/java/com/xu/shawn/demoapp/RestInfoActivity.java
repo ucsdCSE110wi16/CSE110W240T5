@@ -33,7 +33,7 @@ public class RestInfoActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(this, PreferenceActivity.class);
+        Intent intent = new Intent(this, ChooseOneActivity.class);
         startActivity(intent);
     }
 }
