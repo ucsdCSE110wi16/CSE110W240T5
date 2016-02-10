@@ -144,7 +144,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 searchMap+= "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=";
                 searchMap+=location.getLatitude();
                 searchMap+=",";
+                searchMap+=location.getLongitude();
                 searchMap+="&radius=500&types=food&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
+                Log.v("link", searchMap);
+
+                new GetJson().execute(searchMap);
+                new GetJson().execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM");
 
             }
 
@@ -158,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
-        new GetJson().execute(searchMap);
+
 
     }
 
