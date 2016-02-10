@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public static final int TYPE_RESTAURANT = 79;
     public HashMap<String, Place> Restaurants = new HashMap<>();
     public String restNames ="";
+    public String searchMap = "";
 
     private static final int REQUEST_PLACE_PICKER = 1;
 
@@ -140,6 +141,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 // Called when a new location is found by the network location provider.
                 Log.v("location lat", ""+location.getLatitude());
                 Log.v("location long", ""+location.getLongitude());
+                searchMap+= "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=";
+                searchMap+=location.getLatitude();
+                searchMap+=",";
+                searchMap+="&radius=500&types=food&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
 
             }
 
@@ -153,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
-        new GetJson().execute("https://maps.googleapis.com/maps/api/place/textsearch/xml?query=restaurants+in+Sydney&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM");
+        new GetJson().execute(searchMap);
 
     }
 

@@ -82,12 +82,25 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
                         Log.v("inside ", "" + Restaurants.isEmpty() + " " + Restaurants.size());
                     }
                 }
-                TextView rest1 = (TextView) findViewById(R.id.textView2);
-                rest1.setText(restArray.get(rand.nextInt(restArray.size())));
+                if ( restArray.size() > 1) {
+                    int a = rand.nextInt(restArray.size());
+                    int b = rand.nextInt(restArray.size());
+                    while (a == b) b = rand.nextInt(restArray.size());
+                    TextView rest1 = (TextView) findViewById(R.id.textView2);
+                    rest1.setText(restArray.get(a));
 
-                TextView rest2 = (TextView) findViewById(R.id.textView);
-                rest2.setText(restArray.get(rand.nextInt(restArray.size())));
-                likelyPlaces.release();
+                    TextView rest2 = (TextView) findViewById(R.id.textView);
+                    rest2.setText(restArray.get(b));}
+                else {
+                    TextView rest1 = (TextView) findViewById(R.id.textView2);
+                    rest1.setText("Subway");
+
+                    TextView rest2 = (TextView) findViewById(R.id.textView);
+                    rest2.setText("Tapioca express");
+
+                }
+                    likelyPlaces.release();
+
             }
         });
 
