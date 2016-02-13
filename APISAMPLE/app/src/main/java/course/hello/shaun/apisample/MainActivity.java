@@ -50,12 +50,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     public final static String Name = "course.hello.shaun.Demo.Name";
     public final static String Add = "course.hello.shaun.Demo.Add";
     public final static String Rate = "course.hello.shaun.Demo.Rate";
-    public final static String Price = "course.hello.shaun.Demo.Price";
     public GoogleApiClient mGoogleApiClient;
     public static final int TYPE_RESTAURANT = 79;
     public HashMap<String, Place> Restaurants = new HashMap<>();
     public String restNames ="";
     public String searchMap = "";
+    public double Lati = 0;
+    public double Longi = 0;
+    public LocationListener locationListener;
+    public LocationManager locationManager;
 
     private static final int REQUEST_PLACE_PICKER = 1;
 
@@ -72,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
-
     }
 
     @Override
@@ -98,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -133,24 +134,25 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         //LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         // Acquire a reference to the system Location Manager
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
+            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-        android.location.LocationListener locationListener = new android.location.LocationListener() {
+            locationListener = new android.location.LocationListener() {
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
                 Log.v("location lat", ""+location.getLatitude());
                 Log.v("location long", ""+location.getLongitude());
-                searchMap+= "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=";
+                Longi = location.getLongitude();
+                Lati = location.getLatitude();
+                searchMap= "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=";
                 searchMap+=location.getLatitude();
                 searchMap+=",";
                 searchMap+=location.getLongitude();
-                searchMap+="&radius=500&types=food&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
+                searchMap+="&radius=1000&types=food&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
                 Log.v("link", searchMap);
-
                 new GetJson().execute(searchMap);
-                new GetJson().execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM");
-
+                stoplisten();
+                //new GetJson().execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM");
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -161,10 +163,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         };
 
         // Register the listener with the Location Manager to receive location updates
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0, locationListener);
 
+//        new GetJson().execute(searchMap);
+//        locationManager.removeUpdates(locationListener);
 
+    }
 
+    public void stoplisten(){
+        locationManager.removeUpdates(locationListener);
     }
 
     public void showPlaces(View V) {
@@ -236,6 +243,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
 }
+
 
 class GetJson extends AsyncTask<String, Void, JSONObject> {
 
