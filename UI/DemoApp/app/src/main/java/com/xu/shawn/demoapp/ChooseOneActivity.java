@@ -33,6 +33,7 @@ import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -104,51 +105,19 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0, locationListener);
 
-//        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
-//                .getCurrentPlace(mGoogleApiClient, null);
-//
-//        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
-//            @Override
-//            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
-//                Random rand = new Random();
-//                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-//                    if (placeLikelihood.getPlace().getPlaceTypes().contains(TYPE_RESTAURANT)) {
-//                        Log.i(TAG, String.format("Place '%s' has likelihood: %g",
-//                                placeLikelihood.getPlace().getName(),
-//                                placeLikelihood.getLikelihood()));
-//                        //Restaurants.put(placeLikelihood.getPlace().getName().toString(), placeLikelihood.getPlace());
-//                        //restNames += "\n" + placeLikelihood.getPlace().getName().toString();
-//                        restArray.add(placeLikelihood.getPlace().getName().toString());
-//                        Log.v("inside ", "" + Restaurants.isEmpty() + " " + Restaurants.size());
-//                    }
-//                }
-//                if ( restArray.size() > 1) {
-//                    int a = rand.nextInt(restArray.size());
-//                    int b = rand.nextInt(restArray.size());
-//                    while (a == b) b = rand.nextInt(restArray.size());
-//                    TextView rest1 = (TextView) findViewById(R.id.textView2);
-//                    rest1.setText(restArray.get(a));
-//
-//                    TextView rest2 = (TextView) findViewById(R.id.textView);
-//                    rest2.setText(restArray.get(b));}
-//                else {
-//                    TextView rest1 = (TextView) findViewById(R.id.textView2);
-//                    rest1.setText("Subway");
-//
-//                    TextView rest2 = (TextView) findViewById(R.id.textView);
-//                    rest2.setText("Tapioca express");
-//
-//                }
-//                    likelyPlaces.release();
-//
-//            }
-//        });
+
+        TextView rest1 = (TextView) findViewById(R.id.textView2);
+        rest1.setText("Subway");
+
+        TextView rest2 = (TextView) findViewById(R.id.textView);
+        rest2.setText("Tapioca express");
+
 
         btnGoResInfo = (Button)findViewById(R.id.GotoRes);
         btnGoResInfo.setOnClickListener(this);
 
     }
-    
+
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(this, RestInfoActivity.class);
@@ -166,15 +135,14 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
 
 }
 
-class GetJson extends AsyncTask<String, Void, JSONObject> {
+class GetJson extends AsyncTask<String, Void, ArrayList<String>> {
 
-    private Exception exception;
+    private String json = null;
+    private ArrayList<String> restNameList = new ArrayList<>();
 
-    protected JSONObject doInBackground(String... params) {
+    protected ArrayList<String> doInBackground(String... params) {
 
-        String json = null;
         try {
-            //String url = "https://maps.googleapis.com/maps/api/place/radarsearch/json?location=51.503186,-0.126446&radius=5000&types=museum&key=YOUR_API_KEY";
             URL urls= new URL(params[0]);
             HttpURLConnection urlConnection = (HttpURLConnection) urls.openConnection();
 
@@ -206,13 +174,21 @@ class GetJson extends AsyncTask<String, Void, JSONObject> {
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(json);
-        } catch (Throwable t){
+            JSONArray jsonArray = jsonObject.optJSONArray("results");
 
+            for(int i=0; i < jsonArray.length(); i++){
+                JSONObject temp = jsonArray.getJSONObject(i);
+                String name = temp.optString("name").toString();
+                restNameList.add(name);
+            }
+
+        } catch (Throwable t){
+            Log.v("Throw","Can't parse");
         }
-        return jsonObject;
+        return restNameList;
     }
 
-    protected void onPostExecute(JSONObject json) {
+    protected void onPostExecute(ArrayList<String> list) {
         //Can get intent of something.
     }
 }
