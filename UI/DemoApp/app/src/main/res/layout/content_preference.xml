@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,122 +11,484 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.xu.shawn.demoapp.PreferenceActivity"
     tools:showIn="@layout/activity_preference"
-    android:background="#f0dfc4">
+    android:background="#f0dfc4"
+    android:weightSum="1"
+    android:gravity="clip_vertical"
+    android:orientation="vertical">
 
-    <RatingBar
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/ratingBar"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp" />
+        android:orientation="vertical">
 
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ratingBar2"
-        android:layout_below="@+id/textView3"
-        android:layout_alignLeft="@+id/ratingBar"
-        android:layout_alignStart="@+id/ratingBar"
-        android:layout_marginTop="5dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Price"
+            android:id="@+id/tV1"
+            android:textAlignment="center"
+            android:textSize="@dimen/abc_text_size_display_1_material"
+            android:autoText="false"
+            android:textColor="#ae060606"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"/>
 
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ratingBar3"
-        android:layout_below="@+id/textView4"
-        android:layout_alignLeft="@+id/ratingBar2"
-        android:layout_alignStart="@+id/ratingBar2"
-        android:layout_marginTop="5dp"
-        android:theme="@style/Base.Widget.AppCompat.RatingBar" />
+        <SeekBar
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sB1"
+            android:layout_below="@+id/tV1"
+            android:layout_marginTop="10dp"
+            android:progress="0"
+            android:max="100"
+            />
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner"
-        android:spinnerMode="dropdown"
-        android:entries="@array/food_type"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="5dp"
-        android:textAlignment="center"
-        android:layout_alignRight="@+id/ratingBar"
-        android:layout_alignEnd="@+id/ratingBar"
-        android:layout_alignLeft="@+id/ratingBar"
-        android:layout_alignStart="@+id/ratingBar"
-        android:gravity="center" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Rate"
+            android:id="@+id/tV2"
+            android:textAlignment="center"
+            android:textSize="@dimen/abc_text_size_display_1_material"
+            android:textColor="#ae030303"
+            android:layout_below="@+id/sB1"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Price"
-        android:id="@+id/textView"
-        android:textAlignment="center"
-        android:textSize="@dimen/abc_text_size_display_1_material"
-        android:autoText="false"
-        android:textColor="#ae060606"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="0dp" />
+        <SeekBar
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sB2"
+            android:layout_below="@+id/tV2"
+            android:layout_marginTop="3dp"
+            android:progress="0" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Type of Food"
-        android:id="@+id/textView2"
-        android:textAlignment="center"
-        android:textSize="@dimen/abc_text_size_display_1_material"
-        android:textColor="#ae030303"
-        android:layout_below="@+id/ratingBar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="0dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/JFood"
+            android:id="@+id/tV3"
+            android:layout_below="@+id/sB2"
+            android:layout_marginTop="15dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Time"
-        android:id="@+id/textView3"
-        android:textAlignment="center"
-        android:textSize="@dimen/abc_text_size_display_1_material"
-        android:textColor="#ae000000"
-        android:layout_below="@+id/spinner"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="0dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Hate"
+            android:id="@+id/textView1"
+            android:layout_below="@+id/tV3"
+            android:layout_marginTop="10dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Rate"
-        android:id="@+id/textView4"
-        android:textAlignment="center"
-        android:textSize="@dimen/abc_text_size_display_1_material"
-        android:textColor="#ae030303"
-        android:layout_below="@+id/ratingBar2"
-        android:layout_alignRight="@+id/textView3"
-        android:layout_alignEnd="@+id/textView3"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="0dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Favorite"
+            android:id="@+id/textView2"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignTop="@+id/textView1" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:id="@+id/button"
-        android:layout_below="@+id/ratingBar3"
-        android:layout_marginTop="10dp"
-        android:background="#aeca843b"
-        android:textAlignment="center"
-        android:layout_alignRight="@+id/ratingBar3"
-        android:layout_alignEnd="@+id/ratingBar3"
-        android:layout_alignLeft="@+id/ratingBar3"
-        android:layout_alignStart="@+id/ratingBar3" />
+        <SeekBar
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sB3"
+            android:layout_below="@+id/textView1"
+            android:layout_marginTop="3dp"
+            android:progress="50" />
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/CFood"
+            android:id="@+id/tV4"
+            android:layout_below="@+id/sB3"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Hate"
+            android:id="@+id/textView3"
+            android:layout_below="@+id/tV4"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Favorite"
+            android:id="@+id/textView4"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignTop="@+id/textView3" />
+
+        <SeekBar
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sB4"
+            android:layout_below="@+id/textView3"
+            android:layout_marginTop="3dp"
+            android:progress="50" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/AFood"
+            android:id="@+id/tV5"
+            android:layout_below="@+id/sB4"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Hate"
+            android:id="@+id/textView5"
+            android:layout_below="@+id/tV5"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Favorite"
+            android:id="@+id/textView6"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignTop="@+id/textView5" />
+
+        <SeekBar
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sB5"
+            android:layout_below="@+id/textView5"
+            android:layout_marginTop="3dp"
+            android:progress="50" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/VFood"
+            android:id="@+id/tV6"
+            android:layout_below="@+id/sB5"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Hate"
+            android:id="@+id/textView7"
+            android:layout_below="@+id/tV6"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Favorite"
+            android:id="@+id/textView8"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignTop="@+id/textView7" />
+
+        <SeekBar
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sB6"
+            android:layout_below="@+id/textView7"
+            android:layout_marginTop="3dp"
+            android:progress="50" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/HFood"
+            android:id="@+id/tV7"
+            android:layout_below="@+id/sB6"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Hate"
+            android:id="@+id/textView9"
+            android:layout_below="@+id/tV7"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Favorite"
+            android:id="@+id/textView10"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignTop="@+id/textView9" />
+
+        <SeekBar
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sB7"
+            android:layout_below="@+id/textView9"
+            android:layout_marginTop="3dp"
+            android:progress="50" />
+
+       <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/IFood"
+            android:id="@+id/tV8"
+            android:layout_below="@+id/sB7"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Hate"
+            android:id="@+id/textView11"
+            android:layout_below="@+id/tV8"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Favorite"
+            android:id="@+id/textView12"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignTop="@+id/textView11" />
+
+        <SeekBar
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sB8"
+            android:layout_below="@+id/textView11"
+            android:layout_marginTop="3dp"
+            android:progress="50" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/FFood"
+            android:id="@+id/tV9"
+            android:layout_below="@+id/sB8"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Hate"
+            android:id="@+id/textView13"
+            android:layout_below="@+id/tV9"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Favorite"
+            android:id="@+id/textView14"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignTop="@+id/textView13" />
+
+        <SeekBar
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sB9"
+            android:layout_below="@+id/textView13"
+            android:layout_marginTop="3dp"
+            android:progress="50" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/FastFood"
+            android:id="@+id/tV10"
+            android:layout_below="@+id/sB9"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Hate"
+            android:id="@+id/textView15"
+            android:layout_below="@+id/tV10"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Favorite"
+            android:id="@+id/textView16"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignTop="@+id/textView15" />
+
+        <SeekBar
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sB10"
+            android:layout_below="@+id/textView15"
+            android:layout_marginTop="3dp"
+            android:progress="50" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/TFood"
+            android:id="@+id/tV11"
+            android:layout_below="@+id/sB10"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Hate"
+            android:id="@+id/textView17"
+            android:layout_below="@+id/tV11"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Favorite"
+            android:id="@+id/textView18"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignTop="@+id/textView17" />
+
+        <SeekBar
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sB11"
+            android:layout_below="@+id/textView17"
+            android:layout_marginTop="3dp"
+            android:progress="50" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/Others"
+            android:id="@+id/tV12"
+            android:layout_below="@+id/sB11"
+            android:layout_marginTop="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Hate"
+            android:id="@+id/textView19"
+            android:layout_below="@+id/tV12"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/Favorite"
+            android:id="@+id/textView20"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignTop="@+id/textView19" />
+
+        <SeekBar
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/sB12"
+            android:layout_below="@+id/textView19"
+            android:layout_marginTop="3dp"
+            android:progress="50" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Submit"
+            android:id="@+id/btnSubmit"
+            android:background="#aeca843b"
+            android:minHeight="30dp"
+            android:minWidth="120dp"
+            android:layout_below="@+id/sB12"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="5dp" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Load"
+            android:id="@+id/Load"
+            android:background="#aeca843b"
+            android:minHeight="30dp"
+            android:minWidth="120dp"
+            android:layout_below="@+id/sB12"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="5dp" />
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="New Text"-->
+            <!--android:id="@+id/textShow"-->
+            <!--android:layout_alignTop="@+id/btnSubmit"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_marginTop="50dp" />-->
+
+    </RelativeLayout>
+
+
+
+</ScrollView>

@@ -15,11 +15,11 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
-    <string name="title_activity_rest_info">RestInfoActivity</string>
-    <string name="title_activity_choose_one">ChooseOneActivity</string>
-    <string name="title_activity_preference">PreferenceActivity</string>
+        completions." </string>
+
+    <string name="title_activity_rest_info">RestInfo</string>
+    <string name="title_activity_choose_one">ChooseOne</string>
+    <string name="title_activity_preference">Preference</string>
     <string name="next">N</string>
     <string name="return_home">R</string>
 
@@ -30,5 +30,22 @@
         <item>Mexican Food</item>
         <item>Korean Food</item>
     </string-array>
+
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_preference2">Preference2Activity</string>
+    <string name="Favorite">Love</string>
+    <string name="Hate">Hate</string>
+    <string name="JFood">Japanese Food</string>
+    <string name="CFood">Chinese Food</string>
+    <string name="AFood">American Food</string>
+    <string name="VFood">Vietnamese Food</string>
+    <string name="HFood">Hispanic Food</string>
+    <string name="IFood">Italian Food</string>
+    <string name="FFood">French Food</string>
+    <string name="FastFood">Fast Food</string>
+    <string name="TFood">Thai Food</string>
+    <string name="Others">Others</string>
+    <string name="Load">Load</string>
+    <string name="Submit">Submit</string>
 
 </resources>

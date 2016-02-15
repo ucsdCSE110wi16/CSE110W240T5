@@ -17,8 +17,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        btnGoPre = (Button)findViewById(R.id.GotoPre);
-        btnGoPre.setOnClickListener(this);
+//        btnGoPre = (Button)findViewById(R.id.GotoPre);
+//        btnGoPre.setOnClickListener(this);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
