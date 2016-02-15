@@ -18,6 +18,10 @@ public class RestInfoActivity extends AppCompatActivity implements View.OnClickL
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //getinteny
+        //intentgeysytring
+        //textview set text
+
         btnGoback = (Button)findViewById(R.id.Goback);
         btnGoback.setOnClickListener(this);
 

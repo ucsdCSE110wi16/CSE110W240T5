@@ -165,9 +165,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0, locationListener);
 
-//        new GetJson().execute(searchMap);
-//        locationManager.removeUpdates(locationListener);
-
     }
 
     public void stoplisten(){
@@ -282,7 +279,13 @@ class GetJson extends AsyncTask<String, Void, JSONObject> {
             Log.e("Exception", e3.toString());
             e3.printStackTrace();
         }
-        JSONObject jsonObject =  new JSONObject();
+
+        JSONObject jsonObject = null;
+        try {
+             jsonObject = new JSONObject(json);
+        } catch (Throwable t){
+
+        }
         return jsonObject;
     }
 
