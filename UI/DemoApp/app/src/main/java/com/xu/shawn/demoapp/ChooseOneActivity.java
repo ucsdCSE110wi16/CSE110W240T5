@@ -1,6 +1,8 @@
 package com.xu.shawn.demoapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -9,10 +11,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 
 
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +56,9 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
     public LocationListener locationListener;
     public LocationManager locationManager;
     public String searchMap = "";
+    public String PassJson = "";
+    public ArrayList<String> namelist = new ArrayList<>();
+    public boolean setup = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +81,19 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         String restName2 = "Rest2";
 
         final ArrayList <String> restArray = new ArrayList<>();
+
+        AlertDialog alertDialog = new AlertDialog.Builder(ChooseOneActivity.this).create();
+        alertDialog.setTitle("Welcome!");
+        alertDialog.setMessage("Thank you for using our app!\n " +
+                "We are searching for the best restaurants around you now!\n" +
+                "Bon Appétit！");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "I am ready!",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
 
         //LocationManager and listener
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -105,13 +126,11 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0, locationListener);
 
-
         TextView rest1 = (TextView) findViewById(R.id.textView2);
         rest1.setText("Subway");
 
         TextView rest2 = (TextView) findViewById(R.id.textView);
         rest2.setText("Tapioca express");
-
 
         btnGoResInfo = (Button)findViewById(R.id.GotoRes);
         btnGoResInfo.setOnClickListener(this);
@@ -120,8 +139,25 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
+        if(namelist.size() > 0)
+        {Log.v("before ", setup+" "+namelist.get(0));
         Intent intent = new Intent(this, RestInfoActivity.class);
-        startActivity(intent);
+        intent.putExtra("json", PassJson);
+        startActivity(intent);}
+        else {
+            AlertDialog alertDialog = new AlertDialog.Builder(ChooseOneActivity.this).create();
+            alertDialog.setTitle("Oops..");
+            alertDialog.setMessage("Looks like the Internet's kinda slow.\n" +
+                    "Try it again in a few seconds? Still love ya!");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+        }
+
     }
 
     @Override
@@ -131,64 +167,72 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
 
     public void stoplisten(){
         locationManager.removeUpdates(locationListener);
+
+    }
+
+    class GetJson extends AsyncTask<String, Void, ArrayList<String>> {
+
+        private String json = null;
+        private ArrayList<String> restNameList = new ArrayList<>();
+
+        protected ArrayList<String> doInBackground(String... params) {
+
+            try {
+                URL urls= new URL(params[0]);
+                HttpURLConnection urlConnection = (HttpURLConnection) urls.openConnection();
+
+                InputStream in = urlConnection.getInputStream();
+                InputStreamReader isr = new InputStreamReader(in);
+
+                BufferedReader reader = new BufferedReader(isr);
+
+                StringBuilder builder = new StringBuilder();
+                String line;
+                while((line = reader.readLine()) != null){
+                    builder.append(line+"\n");
+                }
+                reader.close();
+                json = builder.toString();
+                PassJson = json;
+
+            } catch (IllegalStateException e1) {
+                Log.e("IllegalStateException", e1.toString());
+                e1.printStackTrace();
+            } catch (IOException e2) {
+                Log.e("IOException", e2.toString());
+                e2.printStackTrace();
+            } catch(Exception e3) {
+                Log.e("Exception", e3.toString());
+                e3.printStackTrace();
+            }
+
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(json);
+                JSONArray jsonArray = jsonObject.optJSONArray("results");
+
+                for(int i=0; i < jsonArray.length(); i++){
+                    JSONObject temp = jsonArray.getJSONObject(i);
+                    String name = temp.optString("name").toString();
+                    Log.v("names: ",name);
+                    restNameList.add(name);
+                }
+
+            } catch (Throwable t){
+                Log.v("Throw","Can't parse");
+            }
+            namelist = restNameList;
+            return restNameList;
+        }
+
+        protected void onPostExecute(ArrayList<String> list) {
+            //Can get intent of something.
+            setup = true;
+            Log.v("setup", setup+"");
+
+        }
     }
 
 }
 
-class GetJson extends AsyncTask<String, Void, ArrayList<String>> {
 
-    private String json = null;
-    private ArrayList<String> restNameList = new ArrayList<>();
-
-    protected ArrayList<String> doInBackground(String... params) {
-
-        try {
-            URL urls= new URL(params[0]);
-            HttpURLConnection urlConnection = (HttpURLConnection) urls.openConnection();
-
-            InputStream in = urlConnection.getInputStream();
-            InputStreamReader isr = new InputStreamReader(in);
-
-            BufferedReader reader = new BufferedReader(isr);
-
-            StringBuilder builder = new StringBuilder();
-            String line;
-            while((line = reader.readLine()) != null){
-                builder.append(line+"\n");
-            }
-            reader.close();
-            json = builder.toString();
-            Log.v("json ", json);
-
-        } catch (IllegalStateException e1) {
-            Log.e("IllegalStateException", e1.toString());
-            e1.printStackTrace();
-        } catch (IOException e2) {
-            Log.e("IOException", e2.toString());
-            e2.printStackTrace();
-        } catch(Exception e3) {
-            Log.e("Exception", e3.toString());
-            e3.printStackTrace();
-        }
-
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(json);
-            JSONArray jsonArray = jsonObject.optJSONArray("results");
-
-            for(int i=0; i < jsonArray.length(); i++){
-                JSONObject temp = jsonArray.getJSONObject(i);
-                String name = temp.optString("name").toString();
-                restNameList.add(name);
-            }
-
-        } catch (Throwable t){
-            Log.v("Throw","Can't parse");
-        }
-        return restNameList;
-    }
-
-    protected void onPostExecute(ArrayList<String> list) {
-        //Can get intent of something.
-    }
-}
