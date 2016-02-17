@@ -116,6 +116,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Toast.makeText(LoginActivity.this, "You are logged in.", Toast.LENGTH_SHORT).show();
 
 
+                        intent = new Intent(LoginActivity.this, PreferenceActivity.class);
+                        signInButtonClick();
 
 
                     }
@@ -143,8 +145,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //check the input username and password match or not
                 ref.authWithPassword(emailToSearch, passwordToSearch, authResultHandler);
 
-                intent = new Intent(this, PreferenceActivity.class);
-                signInButtonClick();
                 break;
 
             case R.id.register:

@@ -4,18 +4,21 @@ package com.xu.shawn.demoapp;
  * Created by diana on 16/2/8.
  * This class is used to set user preferences in Firebase account.
  */
-public class User {
+public class Preferences {
 
-    private String userName;
-    private int asian;
-    private int european;
+  /*  private String user_ID;
+    private int japanese;
+    private int chinese;
+    private int american;
+    private int vietnamese;
+
     private int hispanic;
     private int african;
     private int others;
 
-    public User(){}
+    public Preferences(){}
 
-    public User(String userID, int asi, int euro, int hisp, int afri, int othe){
+    public Preferences(String userID, int asi, int euro, int hisp, int afri, int othe){
 
         this.asian = asi;
         this.european = euro;
@@ -23,10 +26,11 @@ public class User {
         this.african = afri;
         this.others = othe;
     }
-
-    public String getUserName(){
+*/
+    /*public String getUserName(){
         return userName;
     }
+    *//*
 
     public int getAsian(){
         return asian;
@@ -44,5 +48,5 @@ public class User {
         return others;
     }
 
-
+*/
 }

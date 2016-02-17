@@ -50,19 +50,31 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         EditText etId2 = (EditText) findViewById(R.id.password2);
         String passWord2 = etId2.getText().toString();
 
+
+
         if(!passWord1.equals(passWord2)) {
             Toast.makeText(RegisterActivity.this, "Passwords don't match.", Toast.LENGTH_SHORT).show();
+
         }
         else {
             Toast.makeText(RegisterActivity.this, "Signed up successfully! Please log in ^v^", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
         }
 
-        Firebase newRef = new Firebase("https://luminous-inferno-8213.firebaseio.com/");
-        newRef.createUser(emailToStore, passWord1, new Firebase.ValueResultHandler<Map<String, Object>>(){
+        final Firebase newRef = new Firebase("https://luminous-inferno-8213.firebaseio.com/");
+        newRef.createUser(emailToStore, passWord1, new Firebase.ValueResultHandler<Map<String, Object>>() {
+
             @Override
             public void onSuccess(Map<String, Object> result) {
                 System.out.println("Successfully created user account with uid: " + result.get("uid"));
+
+                //final String myUID = (String)result.get("uid");
+                //Preferences myPref = new Preferences(myUID, 50, 50, 50, 50, 50);
+                //newRef.updateChildren(myPref);
+
             }
+
             @Override
             public void onError(FirebaseError firebaseError) {
             }
@@ -73,7 +85,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         //User newU = new User();
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+
     }
 }
