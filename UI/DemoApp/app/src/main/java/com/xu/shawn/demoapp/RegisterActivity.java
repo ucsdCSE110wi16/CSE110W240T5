@@ -54,15 +54,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             Toast.makeText(RegisterActivity.this, "Passwords don't match.", Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(RegisterActivity.this, "Signed up successfully! Please log in ^v^", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RegisterActivity.this, "Signed up successfully! Please log in ^o^", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
         }
 
         Firebase newRef = new Firebase("https://luminous-inferno-8213.firebaseio.com/");
-        newRef.createUser(emailToStore, passWord1, new Firebase.ValueResultHandler<Map<String, Object>>(){
+        newRef.createUser(emailToStore, passWord1, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> result) {
                 System.out.println("Successfully created user account with uid: " + result.get("uid"));
             }
+
             @Override
             public void onError(FirebaseError firebaseError) {
             }
@@ -73,7 +76,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         //User newU = new User();
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+
     }
 }
