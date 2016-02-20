@@ -477,30 +477,6 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -520,7 +496,4 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         intent.putExtra("values", values);
         startActivity(intent);
     }
-
-
-
 }

@@ -90,7 +90,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
 
             case R.id.email_sign_in_button:
-
                 //connect to Firebase account to login
 
                 EditText etId = (EditText) findViewById(R.id.email);
@@ -134,8 +133,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 // handle other errors
                                 break;
                         }
-*/
-
+                        */
                     }
                 };
                 //check the input username and password match or not

@@ -1,6 +1,7 @@
 package com.xu.shawn.demoapp;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -53,6 +54,7 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
     public Bitmap bitmap2;
     public int RestIndex1;
     public int RestIndex2;
+    public ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,18 +78,12 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
 
         final ArrayList <String> restArray = new ArrayList<>();
 
-        AlertDialog alertDialog = new AlertDialog.Builder(ChooseOneActivity.this).create();
-        alertDialog.setTitle("Welcome!");
-        alertDialog.setMessage("Thank you for using our app!\n " +
-                "We are searching for the best restaurants around you now!\n" +
-                "Bon Appétit！");
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "I am ready!",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        alertDialog.show();
+        //Put out a dialog for loading elements.
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Loading restaurants now!");
+        dialog.setCancelable(false);
+        dialog.setInverseBackgroundForced(false);
+        dialog.show();
 
         //LocationManager and listener
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -103,7 +99,7 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
                 searchMap+=location.getLatitude();
                 searchMap+=",";
                 searchMap+=location.getLongitude();
-                searchMap+="&radius=1200&types=restaurant&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
+                searchMap+="&radius=2000&types=restaurant&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
                 //Key word &keyword=japanese
                 Log.v("link", searchMap);
                 new GetJson().execute(searchMap);
@@ -277,6 +273,8 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
 
             TextView rest2 = (TextView) findViewById(R.id.textView);
             rest2.setText(namelist.get(RestIndex2));
+
+            dialog.hide();
         }
     }
 }
