@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -29,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -42,10 +46,13 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
     public String PassJson = "";
     public ArrayList<String> namelist = new ArrayList<>();
     public ArrayList<String> photolist = new ArrayList<>();
-    public boolean setup = false;
     public String restName1 = "Loading..";
     public String restName2 = "Loading..";
     public int[] PreValue;
+    public Bitmap bitmap1;
+    public Bitmap bitmap2;
+    public int RestIndex1;
+    public int RestIndex2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,8 +111,6 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
                 stoplisten();
             }
 
-
-
             public void onStatusChanged(String provider, int status, Bundle extras) {}
 
             public void onProviderEnabled(String provider) {}
@@ -129,7 +134,7 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         if(namelist.size() > 0)
-        {Log.v("before ", setup+" "+namelist.get(0));
+        {
         Intent intent = new Intent(this, RestInfoActivity.class);
         intent.putExtra("json", PassJson);
         startActivity(intent);}
@@ -146,7 +151,6 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
                     });
             alertDialog.show();
         }
-
     }
 
     @Override
@@ -155,12 +159,12 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void stoplisten(){
+        //Stop the location updates.
         locationManager.removeUpdates(locationListener);
-
     }
 
     class GetJson extends AsyncTask<String, Void, ArrayList<String>> {
-
+        //Fetch Json Object
         private String json = null;
         private ArrayList<String> restNameList = new ArrayList<>();
 
@@ -195,46 +199,84 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
                 e3.printStackTrace();
             }
 
+            //Parse JSon
             JSONObject jsonObject = null;
             try {
                 jsonObject = new JSONObject(json);
                 JSONArray jsonArray = jsonObject.optJSONArray("results");
 
                 for(int i=0; i < jsonArray.length(); i++){
+                    //Get the name of the restuarants.
                     JSONObject temp = jsonArray.getJSONObject(i);
                     String name = temp.optString("name").toString();
                     String photoRef = "";
-//                    for(int j = 0; j < photoArr.length() ; j++)
-//                    {
-//                        photoRef = temp.optString("photo_reference").toString();
-//                    }
-//                    String photo = temp.getJSONObject("photo").optString("photo_reference");
+                    if(!temp.isNull("photos")) {
+                        //Get the photo references
+                        JSONArray pArr = temp.optJSONArray("photos");
+                        for (int j = 0; j < pArr.length(); j++) {
+                            JSONObject photoObj = pArr.getJSONObject(j);
+                            photoRef = photoObj.optString("photo_reference").toString();
+                        }
+                    }
+
+                    Log.v("photo", photoRef);
+                    photolist.add(photoRef);
+
                     Log.v("names ",name);
                     restNameList.add(name);
                 }
 
             } catch (Throwable t){
-                Log.v("Throw","Can't parse");
+                Log.v("Throw", "Can't parse");
             }
+
+            //Put the restaurant names into a list.
             namelist = restNameList;
+
+            //Randomize restaurants, will fix after preference database is set.
+            RestIndex1 = (int)(Math.random() * namelist.size());
+            RestIndex2 =(int) Math.random() * namelist.size();
+            while(RestIndex2 == RestIndex1) {RestIndex2 =(int) Math.random() * namelist.size();}
+
+            String Reference = "";
+
+            //Get the photo from the API.
+            try {
+                if(photolist.get(RestIndex1) != "") {
+                    Reference = photolist.get(RestIndex1);
+                    String imageUrl1 = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + Reference + "&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
+                    bitmap1 = BitmapFactory.decodeStream((InputStream) new URL(imageUrl1).getContent());
+                }
+
+                if(photolist.get(RestIndex2) != "") {
+                    Reference = photolist.get(RestIndex2);
+                    String imageUrl2 = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + Reference + "&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
+                    bitmap2 = BitmapFactory.decodeStream((InputStream) new URL(imageUrl2).getContent());
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             return restNameList;
         }
 
         protected void onPostExecute(ArrayList<String> list) {
-            //Can get intent of something.
-            setup = true;
-            Log.v("setup", setup + "");
-            int ran = (int)(Math.random() * namelist.size());
-            TextView rest1 = (TextView) findViewById(R.id.textView2);
-            rest1.setText(namelist.get(ran));
+            //Set up the images.
+            ImageView i = (ImageView)findViewById(R.id.imgViewPic);
+            i.setImageBitmap(bitmap1);
 
-            int ran2 =(int) Math.random() * namelist.size();
-            while(ran2 == ran) {ran2 =(int) Math.random() * 20;}
+            ImageView j = (ImageView)findViewById(R.id.imgViewPic2);
+            j.setImageBitmap(bitmap2);
+
+            //Set up the textview with the text.
+            TextView rest1 = (TextView) findViewById(R.id.textView2);
+            rest1.setText(namelist.get(RestIndex1));
+
             TextView rest2 = (TextView) findViewById(R.id.textView);
-            rest2.setText(namelist.get(ran2));
+            rest2.setText(namelist.get(RestIndex2));
         }
     }
 }
-
-
