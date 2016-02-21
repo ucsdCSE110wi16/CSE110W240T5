@@ -25,19 +25,32 @@
         android:layout_alignBottom="@+id/gridView"
         android:layout_alignParentTop="true">
 
-        <Button
-            android:layout_width="198dp"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="My Preference "
-            android:id="@+id/button"
-            android:background="#aeca843b"
-            android:textSize="20dp"
-            android:elegantTextHeight="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp" />
+            android:weightSum="1">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PROFILE"
+                android:id="@+id/button11"
+                android:background="#ae050504"
+                android:layout_weight="1.03" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LOG OUT"
+                android:id="@+id/button12"
+                android:background="#ae050504"
+                android:layout_marginLeft="30dp" />
+
+        </LinearLayout>
 
         <ScrollView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/scrollView" >
 
