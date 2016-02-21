@@ -54,6 +54,8 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
     public Bitmap bitmap2;
     public int RestIndex1;
     public int RestIndex2;
+    public String[] PreList = {"japanese", "chinese","american","vietnamese","mexican","italian","french",
+                                "fastfood","thai"};
     public ProgressDialog dialog;
 
     @Override
@@ -76,7 +78,9 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         Intent intent = getIntent();
         PreValue = intent.getIntArrayExtra("values");
 
-        final ArrayList <String> restArray = new ArrayList<>();
+        for(int i = 0;i< PreValue.length;i++){
+            Log.v("Val ",""+PreValue[0]);
+        }
 
         //Put out a dialog for loading elements.
         dialog = new ProgressDialog(this);
@@ -85,34 +89,7 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         dialog.setInverseBackgroundForced(false);
         dialog.show();
 
-        //LocationManager and listener
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
-        locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                // Called when a new location is found by the network location provider
-                // Use the new location to update the URL and call API
-                // Stop listens when done.
-                Log.v("location lat", ""+location.getLatitude());
-                Log.v("location long", ""+location.getLongitude());
-                searchMap= "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=";
-                searchMap+=location.getLatitude();
-                searchMap+=",";
-                searchMap+=location.getLongitude();
-                searchMap+="&radius=2000&types=restaurant&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
-                //Key word &keyword=japanese
-                Log.v("link", searchMap);
-                new GetJson().execute(searchMap);
-                //new GetJson().execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM");
-                stoplisten();
-            }
-
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-            public void onProviderEnabled(String provider) {}
-
-            public void onProviderDisabled(String provider) { Log.v(" what ", "what");}
-        };
+        RestaurantsPicker();
 
         TextView rest1 = (TextView) findViewById(R.id.textView2);
         rest1.setText(restName1);
@@ -152,6 +129,44 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
+    }
+
+    //Pick Restaruants
+    public void RestaurantsPicker(){
+        //LocationManager and listener
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider
+                // Use the new location to update the URL and call API
+                // Stop listens when done.
+                Log.v("location lat", ""+location.getLatitude());
+                Log.v("location long", ""+location.getLongitude());
+
+                searchMap= "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+location.getLatitude()+","+location.getLongitude();
+                searchMap+="&keyword=";
+
+                for(int i = 0;i<PreList.length;i++){
+                    if(PreValue[i+2] > 50){
+                        searchMap += "|"+PreList[i];
+                    }
+                }
+
+                searchMap+="&radius=2000&types=restaurant&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
+                //Key word &keyword=japanese
+                Log.v("link", searchMap);
+                new GetJson().execute(searchMap);
+                //new GetJson().execute("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM");
+                stoplisten();
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) { Log.v(" what ", "what");}
+        };
     }
 
     public void stoplisten(){
