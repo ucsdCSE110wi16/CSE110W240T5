@@ -56,6 +56,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    public String getButtonText(int i)
+    {
+        if(0<=i && i<=10)
+            return button[i].getText().toString();
+        else
+            return "Wrong input";
+    }
+
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(this, LoginActivity.class);
