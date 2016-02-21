@@ -39,7 +39,8 @@ import java.util.ArrayList;
 
 public class ChooseOneActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
-    private Button btnGoResInfo;
+    private Button btnchange1;
+    private Button btnchange2;
     public GoogleApiClient mGoogleApiClient;
     public LocationListener locationListener;
     public LocationManager locationManager;
@@ -100,8 +101,10 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0, locationListener);
 
-        btnGoResInfo = (Button)findViewById(R.id.GotoRes);
-        btnGoResInfo.setOnClickListener(this);
+        btnchange1 = (Button)findViewById(R.id.button);
+
+        btnchange2 = (Button)findViewById(R.id.button2);
+
     }
 
     @Override

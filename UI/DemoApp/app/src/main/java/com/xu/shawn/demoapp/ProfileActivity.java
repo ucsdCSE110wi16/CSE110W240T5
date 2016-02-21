@@ -8,19 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 
+import java.util.ArrayList;
+
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
 
 
-    private RadioButton A_1;
-    private RadioButton A_2;
-    private RadioButton A_3;
-    private RadioButton A_4;
-    private RadioButton A_5;
-    private RadioButton A_6;
-    private RadioButton A_7;
-    private RadioButton A_8;
-    private RadioButton A_9;
-    private RadioButton A_10;
+    RadioButton button[] = new RadioButton[10];
 
 
     private Button btnGoPre;
@@ -34,16 +27,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         btnGoPre = (Button)findViewById(R.id.logout);
         btnGoPre.setOnClickListener(this);
 
-        A_1 = (RadioButton)findViewById(R.id.radioButton1);
-        A_2 = (RadioButton)findViewById(R.id.radioButton2);
-        A_3 = (RadioButton)findViewById(R.id.radioButton3);
-        A_4 = (RadioButton)findViewById(R.id.radioButton4);
-        A_5 = (RadioButton)findViewById(R.id.radioButton5);
-        A_6 = (RadioButton)findViewById(R.id.radioButton6);
-        A_7 = (RadioButton)findViewById(R.id.radioButton7);
-        A_8 = (RadioButton)findViewById(R.id.radioButton8);
-        A_9 = (RadioButton)findViewById(R.id.radioButton9);
-        A_10 =(RadioButton)findViewById(R.id.radioButton10);
+        button[0] = (RadioButton)findViewById(R.id.radioButton1);
+        button[1] = (RadioButton)findViewById(R.id.radioButton2);
+        button[2] = (RadioButton)findViewById(R.id.radioButton3);
+        button[3] = (RadioButton)findViewById(R.id.radioButton4);
+        button[4] = (RadioButton)findViewById(R.id.radioButton5);
+        button[5] = (RadioButton)findViewById(R.id.radioButton6);
+        button[6] = (RadioButton)findViewById(R.id.radioButton7);
+        button[7] = (RadioButton)findViewById(R.id.radioButton8);
+        button[8] = (RadioButton)findViewById(R.id.radioButton9);
+        button[9] =(RadioButton)findViewById(R.id.radioButton10);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +46,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 //                        .setAction("Action", null).show();
 //            }
 //        });
+    }
+
+    public void setText(ArrayList<String> list)
+    {
+        for(int i =0; i<list.size(); i++)
+        {
+            button[i].setText(list.get(i));
+        }
     }
 
     @Override
