@@ -54,7 +54,9 @@
                 android:adjustViewBounds="true"
                 android:cropToPadding="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/food1" />
+                android:src="@drawable/food1"
+                android:onClick="onClick"
+                android:nestedScrollingEnabled="false" />
 
         </FrameLayout>
 
@@ -93,7 +95,8 @@
                 android:adjustViewBounds="true"
                 android:cropToPadding="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/food2" />
+                android:src="@drawable/food2"
+                android:onClick="onClick2" />
 
         </FrameLayout>
 

@@ -104,16 +104,42 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         btnchange1 = (Button)findViewById(R.id.button);
 
         btnchange2 = (Button)findViewById(R.id.button2);
-
     }
 
     @Override
     public void onClick(View v) {
+
         if(namelist.size() > 0)
         {
-        Intent intent = new Intent(this, RestInfoActivity.class);
-        intent.putExtra("json", PassJson);
-        startActivity(intent);}
+            Intent intent = new Intent(this, RestInfoActivity.class);
+            intent.putExtra("json", PassJson);
+            intent.putExtra("index", RestIndex1);
+            intent.putExtra("pic", bitmap1);
+            startActivity(intent);
+        }
+        else {
+            AlertDialog alertDialog = new AlertDialog.Builder(ChooseOneActivity.this).create();
+            alertDialog.setTitle("Oops..");
+            alertDialog.setMessage("Looks like the Internet's kinda slow.\n" +
+                    "Try it again in a few seconds? Still love ya!");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+        }
+    }
+    public void onClick2(View v) {
+
+        if(namelist.size() > 0)
+        {
+            Intent intent = new Intent(this, RestInfoActivity.class);
+            intent.putExtra("json", PassJson);
+            intent.putExtra("index", RestIndex2);
+            intent.putExtra("pic", bitmap2);
+            startActivity(intent);}
         else {
             AlertDialog alertDialog = new AlertDialog.Builder(ChooseOneActivity.this).create();
             alertDialog.setTitle("Oops..");

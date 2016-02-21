@@ -23,94 +23,55 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="resturant name"
-        android:id="@+id/textView"
+        android:id="@+id/RestName"
         android:layout_marginRight="25dp"
         android:layout_marginEnd="25dp"
-        android:layout_alignTop="@+id/imageView2"
+        android:layout_alignTop="@+id/Picture"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView2"
+        android:id="@+id/Picture"
 
         android:background="#0f35f4"
         android:minHeight="180dp"
         android:src="@android:drawable/ic_input_get"
+        android:minWidth="140dp"
         android:layout_below="@+id/textView2"
-        android:minWidth="140dp" />
+        android:layout_toRightOf="@+id/textView2"
+        android:layout_toEndOf="@+id/textView2" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="star rate"
-        android:layout_below="@+id/textView"
-        android:layout_alignLeft="@+id/textView"
-        android:layout_alignStart="@+id/textView"
-        android:id="@+id/textView4" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Type of food"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/textView4"
-        android:layout_alignLeft="@+id/textView4"
-        android:layout_alignStart="@+id/textView4" />
+        android:id="@+id/rating"
+        android:layout_below="@+id/RestName"
+        android:layout_alignLeft="@+id/RestName"
+        android:layout_alignStart="@+id/RestName" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="price"
-        android:id="@+id/textView5"
-        android:layout_below="@+id/textView3"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_alignStart="@+id/textView3" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText"
-        android:text="This is the description about that restaurant. It depends on what&apos;s in yelp"
-        android:layout_below="@+id/textView6"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Description:"
-        android:id="@+id/textView6"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="phone number: XXX XXX XXXX"
-        android:id="@+id/textView7"
-        android:layout_below="@+id/textView5"
-        android:layout_alignRight="@+id/editText"
-        android:layout_alignEnd="@+id/editText"
-        android:layout_alignLeft="@+id/textView5"
-        android:layout_alignStart="@+id/textView5" />
+        android:id="@+id/price"
+        android:layout_alignLeft="@+id/rating"
+        android:layout_alignStart="@+id/rating"
+        android:layout_below="@+id/rating" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Address: 8330 mira mesa blvd"
-        android:id="@+id/textView8"
-        android:layout_below="@+id/textView7"
-        android:layout_alignLeft="@+id/textView7"
-        android:layout_alignStart="@+id/textView7" />
+        android:id="@+id/add"
+        android:layout_below="@+id/price"
+        android:layout_alignLeft="@+id/price"
+        android:layout_alignStart="@+id/price" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -118,9 +79,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Map"
         android:id="@+id/textView9"
-        android:layout_below="@+id/editText"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/Picture" />
 
     <ImageButton
         android:layout_width="fill_parent"
@@ -138,8 +99,8 @@
         android:text="@string/return_home"
         android:id="@+id/Goback"
         android:longClickable="false"
-        android:layout_alignBottom="@+id/textView6"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignBottom="@+id/Picture"
+        android:layout_alignRight="@+id/RestName"
+        android:layout_alignEnd="@+id/RestName" />
 
 </RelativeLayout>
