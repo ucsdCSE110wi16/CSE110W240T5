@@ -47,14 +47,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnRegister = (Button) findViewById(R.id.register);
         btnRegister.setOnClickListener(this);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -85,7 +77,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-
 
         switch (v.getId()) {
 
@@ -139,7 +130,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //check the input username and password match or not
                 ref.authWithPassword(emailToSearch, passwordToSearch, authResultHandler);
 
-
                 break;
 
             case R.id.register:
@@ -181,7 +171,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onStop() {
         super.onStop();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(

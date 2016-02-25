@@ -39,8 +39,8 @@ import java.util.ArrayList;
 
 public class ChooseOneActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
-    private Button btnchange1;
-    private Button btnchange2;
+//    private Button btnchange1;
+//    private Button btnchange2;
     public GoogleApiClient mGoogleApiClient;
     public LocationListener locationListener;
     public LocationManager locationManager;
@@ -79,9 +79,9 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         Intent intent = getIntent();
         PreValue = intent.getIntArrayExtra("values");
 
-        for(int i = 0;i< PreValue.length;i++){
-            Log.v("Val ",""+PreValue[0]);
-        }
+//        for(int i = 0;i< PreValue.length;i++){
+//            Log.v("Val ",""+PreValue[0]);
+//        }
 
         //Put out a dialog for loading elements.
         dialog = new ProgressDialog(this);
@@ -101,14 +101,10 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0, locationListener);
 
-        btnchange1 = (Button)findViewById(R.id.button);
-
-        btnchange2 = (Button)findViewById(R.id.button2);
     }
 
     @Override
     public void onClick(View v) {
-
         if(namelist.size() > 0)
         {
             Intent intent = new Intent(this, RestInfoActivity.class);
@@ -157,7 +153,6 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
     }
 
     //Pick Restaruants
@@ -182,7 +177,7 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
                     }
                 }
 
-                searchMap+="&radius=2000&types=restaurant&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
+                searchMap+="&radius=5000&types=restaurant&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
                 //Key word &keyword=japanese
                 Log.v("link", searchMap);
                 new GetJson().execute(searchMap);
@@ -198,9 +193,21 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         };
     }
 
+    //Reload this activity.
+    public void Refresh(View v){
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
     public void stoplisten(){
         //Stop the location updates.
         locationManager.removeUpdates(locationListener);
+    }
+
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 
     class GetJson extends AsyncTask<String, Void, ArrayList<String>> {
@@ -286,12 +293,14 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
                     Reference = photolist.get(RestIndex1);
                     String imageUrl1 = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + Reference + "&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
                     bitmap1 = BitmapFactory.decodeStream((InputStream) new URL(imageUrl1).getContent());
+                    bitmap1 = Bitmap.createScaledBitmap(bitmap1, 100, 100, true);
                 }
 
                 if(photolist.get(RestIndex2) != "") {
                     Reference = photolist.get(RestIndex2);
                     String imageUrl2 = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + Reference + "&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
                     bitmap2 = BitmapFactory.decodeStream((InputStream) new URL(imageUrl2).getContent());
+                    bitmap2 = Bitmap.createScaledBitmap(bitmap2, 100, 100, true);
                 }
 
             } catch (MalformedURLException e) {
@@ -305,11 +314,15 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
 
         protected void onPostExecute(ArrayList<String> list) {
             //Set up the images.
-            ImageView i = (ImageView)findViewById(R.id.imgViewPic);
-            i.setImageBitmap(bitmap1);
+            if(bitmap1 != null) {
+                ImageView i = (ImageView) findViewById(R.id.imgViewPic);
+                i.setImageBitmap(bitmap1);
+            }
 
-            ImageView j = (ImageView)findViewById(R.id.imgViewPic2);
-            j.setImageBitmap(bitmap2);
+            if(bitmap2 != null) {
+                ImageView j = (ImageView) findViewById(R.id.imgViewPic2);
+                j.setImageBitmap(bitmap2);
+            }
 
             //Set up the textview with the text.
             TextView rest1 = (TextView) findViewById(R.id.textView2);

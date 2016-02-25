@@ -71,10 +71,12 @@ public class RestInfoActivity extends AppCompatActivity implements View.OnClickL
         TextView AddressView = (TextView) findViewById(R.id.add);
         AddressView.setText(add);
 
-        ImageView Pics = (ImageView)findViewById(R.id.Picture);
-        Pics.setImageBitmap(pic);
+        if(pic != null) {
+            ImageView Pics = (ImageView) findViewById(R.id.Picture);
+            Pics.setImageBitmap(pic);
+        }
 
-        String priceTag = "";
+        String priceTag = "$";
         TextView PriceView = (TextView) findViewById(R.id.price);
         for (int i = 0;i<price;i++){
             priceTag+="$";
