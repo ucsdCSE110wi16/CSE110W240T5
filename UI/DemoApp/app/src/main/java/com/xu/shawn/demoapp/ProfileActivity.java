@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 
+import com.firebase.client.Firebase;
+
 import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
@@ -28,6 +30,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         btnGoPre.setOnClickListener(this);
 
         button[0] = (RadioButton)findViewById(R.id.radioButton1);
+
+        button[0].setText("Testing");
+        button[0].refreshDrawableState();
+
         button[1] = (RadioButton)findViewById(R.id.radioButton2);
         button[2] = (RadioButton)findViewById(R.id.radioButton3);
         button[3] = (RadioButton)findViewById(R.id.radioButton4);
@@ -66,7 +72,24 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        switch (v.getId()){
+            case R.id.logout:
+
+                Firebase ref = new Firebase("https://luminous-inferno-8213.firebaseio.com/");
+
+                //AuthData authData = ref.getAuth();
+
+                ref.unauth();
+
+                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                startActivity(intent);
+
+                break;
+            case R.id.button11:
+                //do nothing, this button is decoration
+                break;
+            default:
+                break;
+        }
     }
 }

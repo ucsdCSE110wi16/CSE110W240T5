@@ -490,6 +490,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
+
         Intent intent = new Intent(this, ChooseOneActivity.class);
         int []values = {seekProgress1, seekProgress2, seekProgress3, seekProgress4,
                 seekProgress5,seekProgress6,seekProgress7,seekProgress8,seekProgress9,
