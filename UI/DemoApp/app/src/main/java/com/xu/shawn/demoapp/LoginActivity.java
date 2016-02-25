@@ -111,20 +111,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onAuthenticationError(FirebaseError firebaseError) {
                         // Authenticated failed with error firebaseError
-                        Toast.makeText(LoginActivity.this, "You are not logged in. Please try again.",
-                                Toast.LENGTH_SHORT).show();
-                        /*switch (firebaseError.getCode()) {
+
+                        switch (firebaseError.getCode()) {
                             case FirebaseError.USER_DOES_NOT_EXIST:
-                                // handle a non existing user
+                                Toast.makeText(LoginActivity.this, "User doesn't exist →_→ Please try again.",
+                                        Toast.LENGTH_SHORT).show();
                                 break;
                             case FirebaseError.INVALID_PASSWORD:
-                                // handle an invalid password
+                                Toast.makeText(LoginActivity.this, "Invalid password →_→ Please try again.",
+                                        Toast.LENGTH_SHORT).show();
                                 break;
                             default:
-                                // handle other errors
+                                Toast.makeText(LoginActivity.this, "You are not logged in →_→ Please try again.",
+                                        Toast.LENGTH_SHORT).show();
                                 break;
                         }
-                        */
                     }
                 };
                 //check the input username and password match or not
