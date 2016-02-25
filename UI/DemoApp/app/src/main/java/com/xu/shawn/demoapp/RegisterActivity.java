@@ -50,32 +50,69 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         EditText etId2 = (EditText) findViewById(R.id.password2);
         String passWord2 = etId2.getText().toString();
 
-        if(!passWord1.equals(passWord2)) {
-            Toast.makeText(RegisterActivity.this, "Passwords don't match.", Toast.LENGTH_SHORT).show();
+        if(emailToStore.equals("")){
+            Toast.makeText(RegisterActivity.this, "Please enter email →_→", Toast.LENGTH_SHORT).show();
+        }
+        else if(passWord1.equals("")){
+            Toast.makeText(RegisterActivity.this, "Please enter passwords →_→", Toast.LENGTH_SHORT).show();
+        }
+        else if(passWord2.equals("")){
+            Toast.makeText(RegisterActivity.this, "Please enter password again", Toast.LENGTH_SHORT).show();
+        }
+        else if(!passWord1.equals(passWord2)) {
+            Toast.makeText(RegisterActivity.this, "Passwords don't match →_→", Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(RegisterActivity.this, "Signed up successfully! Please log in ^o^", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-            startActivity(intent);
+
+            final Firebase ref = new Firebase("https://luminous-inferno-8213.firebaseio.com/");
+            ref.createUser(emailToStore, passWord1, new Firebase.ValueResultHandler<Map<String, Object>>() {
+                @Override
+                public void onSuccess(Map<String, Object> result) {
+                    System.out.println("Successfully created user account with uid: " + result.get("uid"));
+
+                    String uid = (String) result.get("uid");
+
+                    System.out.println(uid);
+
+                    User newUser = new User();
+                    newUser.setSa(0);
+                    newUser.setSb(0);
+                    newUser.setSc(50);
+                    newUser.setSd(50);
+                    newUser.setSe(50);
+                    newUser.setSf(50);
+                    newUser.setSg(50);
+                    newUser.setSh(50);
+                    newUser.setSi(50);
+                    newUser.setSj(50);
+                    newUser.setSk(50);
+                    newUser.setSl(50);
+
+
+                    System.out.println(newUser.getSa());
+                    System.out.println(newUser.getSb());
+                    System.out.println(newUser.getSc());
+                    System.out.println(newUser.getSd());
+                    System.out.println(newUser.getSe());
+                    System.out.println(newUser.getSf());
+                    System.out.println(newUser.getSg());
+                    System.out.println(newUser.getSh());
+                    System.out.println(newUser.getSi());
+                    System.out.println(newUser.getSj());
+                    System.out.println(newUser.getSk());
+                    System.out.println(newUser.getSl());
+
+                    ref.child("user").child(uid).setValue(newUser);
+
+                    Toast.makeText(RegisterActivity.this, "Signed up successfully! Please log in ^o^", Toast.LENGTH_SHORT).show();
+
+
+                }
+
+                @Override
+                public void onError(FirebaseError firebaseError) {
+                }
+            });
         }
-
-        Firebase newRef = new Firebase("https://luminous-inferno-8213.firebaseio.com/");
-        newRef.createUser(emailToStore, passWord1, new Firebase.ValueResultHandler<Map<String, Object>>() {
-            @Override
-            public void onSuccess(Map<String, Object> result) {
-                System.out.println("Successfully created user account with uid: " + result.get("uid"));
-            }
-
-            @Override
-            public void onError(FirebaseError firebaseError) {
-            }
-
-        });
-
-
-
-        //User newU = new User();
-
-
     }
 }
