@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 
+import java.util.ArrayList;
+
 public class PreferenceActivity extends AppCompatActivity implements View.OnClickListener{
 
     private SeekBar s1;
@@ -25,7 +27,6 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
     private SeekBar s12;
 
     private Button btnGoChooseOne;
-
 //    private TextView textView;
 
     private int seekProgress1;
@@ -49,18 +50,41 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ArrayList<SeekBar> SeekbarList = new ArrayList<>();
+
         s1 = (SeekBar)findViewById(R.id.sB1);
         s2 = (SeekBar)findViewById(R.id.sB2);
         s3 = (SeekBar)findViewById(R.id.sB3);
+        s3.setProgress(50);
         s4 = (SeekBar)findViewById(R.id.sB4);
+        s4.setProgress(50);
         s5 = (SeekBar)findViewById(R.id.sB5);
+        s5.setProgress(50);
         s6 = (SeekBar)findViewById(R.id.sB6);
+        s6.setProgress(50);
         s7 = (SeekBar)findViewById(R.id.sB7);
+        s7.setProgress(50);
         s8 = (SeekBar)findViewById(R.id.sB8);
+        s8.setProgress(50);
         s9 = (SeekBar)findViewById(R.id.sB9);
+        s9.setProgress(50);
         s10 = (SeekBar)findViewById(R.id.sB10);
+        s10.setProgress(50);
         s11 = (SeekBar)findViewById(R.id.sB11);
+        s11.setProgress(50);
         s12 = (SeekBar)findViewById(R.id.sB12);
+        s12.setProgress(50);
+
+        seekProgress3 = s3.getProgress();
+        seekProgress4 = s4.getProgress();
+        seekProgress5 = s5.getProgress();
+        seekProgress6 = s6.getProgress();
+        seekProgress7 = s7.getProgress();
+        seekProgress8 = s8.getProgress();
+        seekProgress9 = s9.getProgress();
+        seekProgress10 = s10.getProgress();
+        seekProgress11 = s11.getProgress();
+        seekProgress12 = s12.getProgress();
 
         btnGoChooseOne = (Button)findViewById(R.id.btnSubmit);
         btnGoChooseOne.setOnClickListener(this);
@@ -498,5 +522,8 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
         intent.putExtra("values", values);
         startActivity(intent);
+        for(int i: values){
+            Log.v("print", ""+i);
+        }
     }
 }

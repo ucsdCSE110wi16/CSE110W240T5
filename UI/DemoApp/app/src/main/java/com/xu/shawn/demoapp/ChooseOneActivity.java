@@ -58,6 +58,7 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
     public String[] PreList = {"japanese", "chinese","american","vietnamese","mexican","italian","french",
                                 "fastfood","thai"};
     public ProgressDialog dialog;
+    public boolean SetFirst = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +79,6 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         //Name of restaurants
         Intent intent = getIntent();
         PreValue = intent.getIntArrayExtra("values");
-
-//        for(int i = 0;i< PreValue.length;i++){
-//            Log.v("Val ",""+PreValue[0]);
-//        }
 
         //Put out a dialog for loading elements.
         dialog = new ProgressDialog(this);
@@ -174,6 +171,7 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
                 for(int i = 0;i<PreList.length;i++){
                     if(PreValue[i+2] > 50){
                         searchMap += "|"+PreList[i];
+                        Log.v("preset", ""+PreValue[i+2]);
                     }
                 }
 
