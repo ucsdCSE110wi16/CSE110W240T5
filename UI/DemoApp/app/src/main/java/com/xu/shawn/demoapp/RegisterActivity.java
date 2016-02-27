@@ -72,40 +72,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                     String uid = (String) result.get("uid");
 
-                    System.out.println(uid);
-
                     User newUser = new User();
-                    newUser.setSa(0);
-                    newUser.setSb(0);
-                    newUser.setSc(50);
-                    newUser.setSd(50);
-                    newUser.setSe(50);
-                    newUser.setSf(50);
-                    newUser.setSg(50);
-                    newUser.setSh(50);
-                    newUser.setSi(50);
-                    newUser.setSj(50);
-                    newUser.setSk(50);
-                    newUser.setSl(50);
-
-
-                    System.out.println(newUser.getSa());
-                    System.out.println(newUser.getSb());
-                    System.out.println(newUser.getSc());
-                    System.out.println(newUser.getSd());
-                    System.out.println(newUser.getSe());
-                    System.out.println(newUser.getSf());
-                    System.out.println(newUser.getSg());
-                    System.out.println(newUser.getSh());
-                    System.out.println(newUser.getSi());
-                    System.out.println(newUser.getSj());
-                    System.out.println(newUser.getSk());
-                    System.out.println(newUser.getSl());
 
                     ref.child("user").child(uid).setValue(newUser);
 
                     Toast.makeText(RegisterActivity.this, "Signed up successfully! Please log in ^o^", Toast.LENGTH_SHORT).show();
 
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(intent);
 
                 }
 

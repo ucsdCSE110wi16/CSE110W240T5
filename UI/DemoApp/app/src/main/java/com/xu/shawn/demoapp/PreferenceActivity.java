@@ -8,40 +8,24 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.Toast;
+
+import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class PreferenceActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private SeekBar s1;
-    private SeekBar s2;
-    private SeekBar s3;
-    private SeekBar s4;
-    private SeekBar s5;
-    private SeekBar s6;
-    private SeekBar s7;
-    private SeekBar s8;
-    private SeekBar s9;
-    private SeekBar s10;
-    private SeekBar s11;
-    private SeekBar s12;
+    private ArrayList<SeekBar> bars = new ArrayList<>();
+    private ArrayList<Integer> progresses = new ArrayList<>();
 
     private Button btnGoChooseOne;
-//    private TextView textView;
-
-    private int seekProgress1;
-    private int seekProgress2;
-    private int seekProgress3;
-    private int seekProgress4;
-    private int seekProgress5;
-    private int seekProgress6;
-    private int seekProgress7;
-    private int seekProgress8;
-    private int seekProgress9;
-    private int seekProgress10;
-    private int seekProgress11;
-    private int seekProgress12;
-
+    private Button btnLoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,480 +34,149 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ArrayList<SeekBar> SeekbarList = new ArrayList<>();
+        bars.add((SeekBar)findViewById(R.id.sB1));
+        bars.add((SeekBar)findViewById(R.id.sB2));
+        bars.add((SeekBar)findViewById(R.id.sB3));
+        bars.add((SeekBar)findViewById(R.id.sB4));
+        bars.add((SeekBar)findViewById(R.id.sB5));
+        bars.add((SeekBar)findViewById(R.id.sB6));
+        bars.add((SeekBar)findViewById(R.id.sB7));
+        bars.add((SeekBar)findViewById(R.id.sB8));
+        bars.add((SeekBar)findViewById(R.id.sB9));
+        bars.add((SeekBar)findViewById(R.id.sB10));
+        bars.add((SeekBar)findViewById(R.id.sB11));
+        bars.add((SeekBar)findViewById(R.id.sB12));
 
-        s1 = (SeekBar)findViewById(R.id.sB1);
-        s2 = (SeekBar)findViewById(R.id.sB2);
-        s3 = (SeekBar)findViewById(R.id.sB3);
-        s3.setProgress(50);
-        s4 = (SeekBar)findViewById(R.id.sB4);
-        s4.setProgress(50);
-        s5 = (SeekBar)findViewById(R.id.sB5);
-        s5.setProgress(50);
-        s6 = (SeekBar)findViewById(R.id.sB6);
-        s6.setProgress(50);
-        s7 = (SeekBar)findViewById(R.id.sB7);
-        s7.setProgress(50);
-        s8 = (SeekBar)findViewById(R.id.sB8);
-        s8.setProgress(50);
-        s9 = (SeekBar)findViewById(R.id.sB9);
-        s9.setProgress(50);
-        s10 = (SeekBar)findViewById(R.id.sB10);
-        s10.setProgress(50);
-        s11 = (SeekBar)findViewById(R.id.sB11);
-        s11.setProgress(50);
-        s12 = (SeekBar)findViewById(R.id.sB12);
-        s12.setProgress(50);
+        for(int i=0; i<2; i++){
+            bars.get(i).setProgress(0);
+        }
+        for(int i=2; i<12; i++){
+            bars.get(i).setProgress(50);
+        }
 
-        seekProgress3 = s3.getProgress();
-        seekProgress4 = s4.getProgress();
-        seekProgress5 = s5.getProgress();
-        seekProgress6 = s6.getProgress();
-        seekProgress7 = s7.getProgress();
-        seekProgress8 = s8.getProgress();
-        seekProgress9 = s9.getProgress();
-        seekProgress10 = s10.getProgress();
-        seekProgress11 = s11.getProgress();
-        seekProgress12 = s12.getProgress();
+        for(int i=0; i<12; i++){
+            progresses.add(bars.get(i).getProgress());
+        }
 
         btnGoChooseOne = (Button)findViewById(R.id.btnSubmit);
         btnGoChooseOne.setOnClickListener(this);
 
-//        textView = (TextView)findViewById(R.id.textShow);
+        btnLoad = (Button) findViewById(R.id.Load);
+        btnLoad.setOnClickListener(this);
 
-        s1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        for(int i=0; i<12;i++) {
 
-            }
+            final int j = i;
+            final SeekBar tmpBar = bars.get(i);
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            tmpBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
-            }
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                seekProgress1 = seekBar.getProgress();
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
 
-                if (seekProgress1 < 13) {
-                    seekBar.setProgress(0);
-                    seekProgress1 = seekBar.getProgress();
-                } else if (seekProgress1 >= 13 && seekProgress1 < 38) {
-                    seekBar.setProgress(25);
-                    seekProgress1 = seekBar.getProgress();
-                } else if (seekProgress1 >= 38 && seekProgress1 < 63) {
-                    seekBar.setProgress(50);
-                    seekProgress1 = seekBar.getProgress();
-                } else if (seekProgress1 >= 63 && seekProgress1 < 88) {
-                    seekBar.setProgress(75);
-                    seekProgress1 = seekBar.getProgress();
-                } else if (seekProgress1 >= 88) {
-                    seekBar.setProgress(100);
-                    seekProgress1 = seekBar.getProgress();
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    int tmp = seekBar.getProgress();
+
+                    if (tmp < 13) {
+                        seekBar.setProgress(0);
+                        progresses.set(j, seekBar.getProgress());
+                    } else if (tmp >= 13 && tmp < 38) {
+                        seekBar.setProgress(25);
+                        progresses.set(j, seekBar.getProgress());
+                    } else if (tmp >= 38 && tmp < 63) {
+                        seekBar.setProgress(50);
+                        progresses.set(j, seekBar.getProgress());
+                    } else if (tmp >= 63 && tmp < 88) {
+                        seekBar.setProgress(75);
+                        progresses.set(j, seekBar.getProgress());
+                    } else if (tmp >= 88) {
+                        seekBar.setProgress(100);
+                        progresses.set(j, seekBar.getProgress());
+                    }
                 }
-
-//                textView.setText("Now is " + seekProgress1);
-            }
-        });
-
-        s2.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                seekProgress2 = seekBar.getProgress();
-
-                if (seekProgress2 < 13) {
-                    seekBar.setProgress(0);
-                    seekProgress2= seekBar.getProgress();
-                } else if (seekProgress2 >= 13 && seekProgress2 < 38) {
-                    seekBar.setProgress(25);
-                    seekProgress2 = seekBar.getProgress();
-                } else if (seekProgress2 >= 38 && seekProgress2 < 63) {
-                    seekBar.setProgress(50);
-                    seekProgress2 = seekBar.getProgress();
-                } else if (seekProgress2 >= 63 && seekProgress2 < 88) {
-                    seekBar.setProgress(75);
-                    seekProgress2 = seekBar.getProgress();
-                } else if (seekProgress2 >= 88) {
-                    seekBar.setProgress(100);
-                    seekProgress2 = seekBar.getProgress();
-                }
-            }
-        });
-
-        s3.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                seekProgress3 = seekBar.getProgress();
-
-                if (seekProgress3 < 13) {
-                    seekBar.setProgress(0);
-                    seekProgress3 = seekBar.getProgress();
-                } else if (seekProgress3 >= 13 && seekProgress3 < 38) {
-                    seekBar.setProgress(25);
-                    seekProgress3 = seekBar.getProgress();
-                } else if (seekProgress3 >= 38 && seekProgress3 < 63) {
-                    seekBar.setProgress(50);
-                    seekProgress3 = seekBar.getProgress();
-                } else if (seekProgress3 >= 63 && seekProgress3 < 88) {
-                    seekBar.setProgress(75);
-                    seekProgress3 = seekBar.getProgress();
-                } else if (seekProgress3 >= 88) {
-                    seekBar.setProgress(100);
-                    seekProgress3 = seekBar.getProgress();
-                }
-            }
-        });
-
-        s4.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                seekProgress4 = seekBar.getProgress();
-
-                if (seekProgress4 < 13) {
-                    seekBar.setProgress(0);
-                    seekProgress4 = seekBar.getProgress();
-                } else if (seekProgress4 >= 13 && seekProgress4 < 38) {
-                    seekBar.setProgress(25);
-                    seekProgress4 = seekBar.getProgress();
-                } else if (seekProgress4 >= 38 && seekProgress4 < 63) {
-                    seekBar.setProgress(50);
-                    seekProgress4 = seekBar.getProgress();
-                } else if (seekProgress4 >= 63 && seekProgress4 < 88) {
-                    seekBar.setProgress(75);
-                    seekProgress4 = seekBar.getProgress();
-                } else if (seekProgress4 >= 88) {
-                    seekBar.setProgress(100);
-                    seekProgress4 = seekBar.getProgress();
-                }
-            }
-        });
-
-        s5.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                seekProgress5 = seekBar.getProgress();
-
-                if (seekProgress5 < 13) {
-                    seekBar.setProgress(0);
-                    seekProgress5 = seekBar.getProgress();
-                } else if (seekProgress5 >= 13 && seekProgress5 < 38) {
-                    seekBar.setProgress(25);
-                    seekProgress5 = seekBar.getProgress();
-                } else if (seekProgress5 >= 38 && seekProgress5 < 63) {
-                    seekBar.setProgress(50);
-                    seekProgress5 = seekBar.getProgress();
-                } else if (seekProgress5 >= 63 && seekProgress5 < 88) {
-                    seekBar.setProgress(75);
-                    seekProgress5 = seekBar.getProgress();
-                } else if (seekProgress5 >= 88) {
-                    seekBar.setProgress(100);
-                    seekProgress5 = seekBar.getProgress();
-                }
-            }
-        });
-
-        s6.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                seekProgress6 = seekBar.getProgress();
-
-                if (seekProgress6 < 13) {
-                    seekBar.setProgress(0);
-                    seekProgress6 = seekBar.getProgress();
-                } else if (seekProgress6 >= 13 && seekProgress6 < 38) {
-                    seekBar.setProgress(25);
-                    seekProgress6 = seekBar.getProgress();
-                } else if (seekProgress6 >= 38 && seekProgress6 < 63) {
-                    seekBar.setProgress(50);
-                    seekProgress6 = seekBar.getProgress();
-                } else if (seekProgress6 >= 63 && seekProgress6 < 88) {
-                    seekBar.setProgress(75);
-                    seekProgress6 = seekBar.getProgress();
-                } else if (seekProgress6 >= 88) {
-                    seekBar.setProgress(100);
-                    seekProgress6 = seekBar.getProgress();
-                }
-            }
-        });
-
-        s7.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                seekProgress7 = seekBar.getProgress();
-
-                if (seekProgress7 < 13) {
-                    seekBar.setProgress(0);
-                    seekProgress7 = seekBar.getProgress();
-                } else if (seekProgress7 >= 13 && seekProgress7 < 38) {
-                    seekBar.setProgress(25);
-                    seekProgress7 = seekBar.getProgress();
-                } else if (seekProgress7 >= 38 && seekProgress7 < 63) {
-                    seekBar.setProgress(50);
-                    seekProgress7 = seekBar.getProgress();
-                } else if (seekProgress7 >= 63 && seekProgress7 < 88) {
-                    seekBar.setProgress(75);
-                    seekProgress7 = seekBar.getProgress();
-                } else if (seekProgress7 >= 88) {
-                    seekBar.setProgress(100);
-                    seekProgress7 = seekBar.getProgress();
-                }
-            }
-        });
-
-        s8.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                seekProgress8 = seekBar.getProgress();
-
-                if (seekProgress8 < 13) {
-                    seekBar.setProgress(0);
-                    seekProgress8 = seekBar.getProgress();
-                } else if (seekProgress8 >= 13 && seekProgress8 < 38) {
-                    seekBar.setProgress(25);
-                    seekProgress8 = seekBar.getProgress();
-                } else if (seekProgress8 >= 38 && seekProgress8 < 63) {
-                    seekBar.setProgress(50);
-                    seekProgress8 = seekBar.getProgress();
-                } else if (seekProgress8 >= 63 && seekProgress8 < 88) {
-                    seekBar.setProgress(75);
-                    seekProgress8 = seekBar.getProgress();
-                } else if (seekProgress8 >= 88) {
-                    seekBar.setProgress(100);
-                    seekProgress8 = seekBar.getProgress();
-                }
-            }
-        });
-
-        s9.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                seekProgress9 = seekBar.getProgress();
-
-                if (seekProgress9 < 13) {
-                    seekBar.setProgress(0);
-                    seekProgress9 = seekBar.getProgress();
-                } else if (seekProgress9 >= 13 && seekProgress9 < 38) {
-                    seekBar.setProgress(25);
-                    seekProgress9 = seekBar.getProgress();
-                } else if (seekProgress9 >= 38 && seekProgress9 < 63) {
-                    seekBar.setProgress(50);
-                    seekProgress9 = seekBar.getProgress();
-                } else if (seekProgress9 >= 63 && seekProgress9 < 88) {
-                    seekBar.setProgress(75);
-                    seekProgress9 = seekBar.getProgress();
-                } else if (seekProgress9 >= 88) {
-                    seekBar.setProgress(100);
-                    seekProgress9 = seekBar.getProgress();
-                }
-            }
-        });
-
-        s10.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                seekProgress10 = seekBar.getProgress();
-
-                if (seekProgress10 < 13) {
-                    seekBar.setProgress(0);
-                    seekProgress10 = seekBar.getProgress();
-                } else if (seekProgress10 >= 13 && seekProgress10 < 38) {
-                    seekBar.setProgress(25);
-                    seekProgress10 = seekBar.getProgress();
-                } else if (seekProgress10 >= 38 && seekProgress10 < 63) {
-                    seekBar.setProgress(50);
-                    seekProgress10 = seekBar.getProgress();
-                } else if (seekProgress10 >= 63 && seekProgress10 < 88) {
-                    seekBar.setProgress(75);
-                    seekProgress10 = seekBar.getProgress();
-                } else if (seekProgress10 >= 88) {
-                    seekBar.setProgress(100);
-                    seekProgress10 = seekBar.getProgress();
-                }
-            }
-        });
-
-        s11.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                seekProgress11 = seekBar.getProgress();
-
-                if (seekProgress11 < 13) {
-                    seekBar.setProgress(0);
-                    seekProgress11 = seekBar.getProgress();
-                } else if (seekProgress11 >= 13 && seekProgress11 < 38) {
-                    seekBar.setProgress(25);
-                    seekProgress11 = seekBar.getProgress();
-                } else if (seekProgress11 >= 38 && seekProgress11 < 63) {
-                    seekBar.setProgress(50);
-                    seekProgress11 = seekBar.getProgress();
-                } else if (seekProgress11 >= 63 && seekProgress11 < 88) {
-                    seekBar.setProgress(75);
-                    seekProgress11 = seekBar.getProgress();
-                } else if (seekProgress11 >= 88) {
-                    seekBar.setProgress(100);
-                    seekProgress11 = seekBar.getProgress();
-                }
-            }
-        });
-
-        s12.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                seekProgress12 = seekBar.getProgress();
-
-                if (seekProgress12 < 13) {
-                    seekBar.setProgress(0);
-                    seekProgress12 = seekBar.getProgress();
-                } else if (seekProgress12 >= 13 && seekProgress12 < 38) {
-                    seekBar.setProgress(25);
-                    seekProgress12 = seekBar.getProgress();
-                } else if (seekProgress12 >= 38 && seekProgress12 < 63) {
-                    seekBar.setProgress(50);
-                    seekProgress12 = seekBar.getProgress();
-                } else if (seekProgress12 >= 63 && seekProgress12 < 88) {
-                    seekBar.setProgress(75);
-                    seekProgress12 = seekBar.getProgress();
-                } else if (seekProgress12 >= 88) {
-                    seekBar.setProgress(100);
-                    seekProgress12 = seekBar.getProgress();
-                }
-            }
-        });
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+            });
+        }
     }
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnSubmit:
 
-        Intent intent = new Intent(this, ChooseOneActivity.class);
-        int []values = {seekProgress1, seekProgress2, seekProgress3, seekProgress4,
-                seekProgress5,seekProgress6,seekProgress7,seekProgress8,seekProgress9,
-                seekProgress10, seekProgress11, seekProgress12};
+                //save preferences to Firebase
 
-        intent.putExtra("values", values);
-        startActivity(intent);
-        for(int i: values){
-            Log.v("print", ""+i);
+                Firebase ref = new Firebase("https://luminous-inferno-8213.firebaseio.com/");
+                AuthData authData = ref.getAuth();
+
+
+                User update = new User();
+                update.setUid(authData.getUid());
+                ArrayList<Integer> toUpdate = new ArrayList<>();
+                for(int i=0; i<12; i++){
+                    toUpdate.add(progresses.get(i));
+                }
+                update.setPref(toUpdate);
+
+
+                ref.child("user").child(authData.getUid()).setValue(update);
+
+
+                Toast.makeText(PreferenceActivity.this, "Preferences saved! ^o^",
+                        Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(PreferenceActivity.this, ChooseOneActivity.class);
+
+                int[] values = new int[12];
+                for(int i=0; i<12; i++){
+                    values[i] = progresses.get(i);
+                }
+
+                intent.putExtra("values", values);
+                startActivity(intent);
+
+                break;
+            case R.id.Load:
+                //load from Firebase
+                Firebase ref1 = new Firebase("https://luminous-inferno-8213.firebaseio.com/user");
+                final AuthData authData1 = ref1.getAuth();
+                Query queryRef1 = ref1.orderByChild("uid").equalTo(authData1.getUid());
+
+                Toast.makeText(PreferenceActivity.this, "Preferences Loaded! ^o^",
+                        Toast.LENGTH_SHORT).show();
+
+
+                queryRef1.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+
+                    public void onDataChange(DataSnapshot snapshot) {
+                        if (snapshot != null && snapshot.getValue() != null) {
+
+                            User tmp = snapshot.child(authData1.getUid()).getValue(User.class);
+
+                            ArrayList<Integer> curr = tmp.getPref();
+                            System.out.println(curr);
+                            
+                            for(int i=0; i<12;i++){
+                                progresses.set(i,curr.get(i));
+                                bars.get(i).setProgress(progresses.get(i));
+                                bars.get(i).refreshDrawableState();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError error) {
+                    }
+                });
+
+                break;
+            default:
+                break;
+
         }
     }
 }
