@@ -128,6 +128,8 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
                 Toast.makeText(PreferenceActivity.this, "Preferences saved! ^o^",
                         Toast.LENGTH_SHORT).show();
 
+                //TESTING
+//                Intent intent = new Intent(PreferenceActivity.this, ProfileActivity.class);
                 Intent intent = new Intent(PreferenceActivity.this, ChooseOneActivity.class);
 
                 int[] values = new int[12];
@@ -158,8 +160,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
                             User tmp = snapshot.child(authData1.getUid()).getValue(User.class);
 
                             ArrayList<Integer> curr = tmp.getPref();
-                            System.out.println(curr);
-                            
+
                             for(int i=0; i<12;i++){
                                 progresses.set(i,curr.get(i));
                                 bars.get(i).setProgress(progresses.get(i));

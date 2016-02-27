@@ -7,8 +7,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
+import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -30,10 +36,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         btnGoPre.setOnClickListener(this);
 
         button[0] = (RadioButton)findViewById(R.id.radioButton1);
-
-        button[0].setText("Testing");
-        button[0].refreshDrawableState();
-
         button[1] = (RadioButton)findViewById(R.id.radioButton2);
         button[2] = (RadioButton)findViewById(R.id.radioButton3);
         button[3] = (RadioButton)findViewById(R.id.radioButton4);
@@ -43,6 +45,53 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         button[7] = (RadioButton)findViewById(R.id.radioButton8);
         button[8] = (RadioButton)findViewById(R.id.radioButton9);
         button[9] =(RadioButton)findViewById(R.id.radioButton10);
+
+
+        //get information from server
+        Firebase ref1 = new Firebase("https://luminous-inferno-8213.firebaseio.com/user");
+        final AuthData authData1 = ref1.getAuth();
+        Query queryRef1 = ref1.orderByChild("uid").equalTo(authData1.getUid());
+
+        queryRef1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot != null && snapshot.getValue() != null) {
+
+                    User tmp = snapshot.child(authData1.getUid()).getValue(User.class);
+
+                    ArrayList<Integer> curr = tmp.getPref();
+
+                    for(int j=2; j<12;j++){
+                        int i = j-2;
+                        if(curr.get(j) < 25){
+                            button[i].setText("I HATE IT!");
+                            button[i].refreshDrawableState();
+                        }
+                        else if(curr.get(j) < 50){
+                            button[i].setText("I DON'T LIKE IT!");
+                            button[i].refreshDrawableState();
+                        }
+                        else if(curr.get(j) == 50){
+                            button[i].setText("WHATEVER!");
+                            button[i].refreshDrawableState();
+                        }
+                        else if(curr.get(j) < 75){
+                            button[i].setText("I LIKE IT!");
+                            button[i].refreshDrawableState();
+                        }
+                        else{
+                            button[i].setText("MY FAVORITE!");
+                            button[i].refreshDrawableState();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError error) {
+            }
+        });
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
