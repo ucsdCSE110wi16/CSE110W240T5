@@ -17,63 +17,92 @@
     tools:showIn="@layout/activity_rest_info"
     android:background="#f0dfc4">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="resturant name"
-        android:id="@+id/RestName"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/Picture" />
-
-    <ImageView
-
-        android:id="@+id/Picture"
-
-        android:adjustViewBounds="true"
-        android:cropToPadding="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/qq"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_height="200dp"
-        android:layout_width="match_parent" />
+        android:layout_alignParentStart="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="star rate"
-        android:id="@+id/rating"
-        android:layout_below="@+id/RestName"
-        android:layout_alignLeft="@+id/RestName"
-        android:layout_alignStart="@+id/RestName" />
+        <ImageView
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="price"
-        android:id="@+id/price"
-        android:layout_alignLeft="@+id/rating"
-        android:layout_alignStart="@+id/rating"
-        android:layout_below="@+id/rating" />
+            android:id="@+id/Picture"
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Address: 8330 mira mesa blvd"
-        android:id="@+id/add"
-        android:layout_below="@+id/price"
-        android:layout_alignLeft="@+id/price"
-        android:layout_alignStart="@+id/price" />
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/qq"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_height="200dp"
+            android:layout_width="match_parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="resturant name"
+            android:id="@+id/RestName"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/Picture"
+            android:textSize="25dp"
+            android:layout_alignRight="@+id/Picture"
+            android:layout_alignEnd="@+id/Picture" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="MY HOUSE"
+            android:id="@+id/add"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignRight="@+id/RestName"
+            android:layout_alignEnd="@+id/RestName"
+            android:layout_below="@+id/RestName"
+            android:layout_above="@+id/textView21"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Rating:"
+            android:id="@+id/textView21"
+            android:layout_above="@+id/rating"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rating"
+            android:layout_above="@+id/textView22"
+            android:layout_toRightOf="@+id/textView2"
+            android:layout_toEndOf="@+id/textView2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Price:"
+            android:id="@+id/textView22"
+            android:layout_above="@+id/Price"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/Price"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/price"
+            android:layout_alignStart="@+id/price"
+            android:layout_marginBottom="51dp" />
+
+    </LinearLayout>
 
 </RelativeLayout>

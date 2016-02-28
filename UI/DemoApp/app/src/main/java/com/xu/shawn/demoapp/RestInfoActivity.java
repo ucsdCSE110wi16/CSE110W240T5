@@ -8,7 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.MapView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,6 +27,8 @@ public class RestInfoActivity extends AppCompatActivity{
     public int price;
     public String add;
     private View fullView;
+    private MapView map;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,11 +68,18 @@ public class RestInfoActivity extends AppCompatActivity{
         TextView nameView = (TextView) findViewById(R.id.RestName);
         nameView.setText(name);
 
-        TextView RatingView = (TextView) findViewById(R.id.rating);
-        RatingView.setText("Rating: "+rating);
+        RatingBar RatingView = (RatingBar) findViewById(R.id.Price);
+        RatingView.setRating((float)price);
+        RatingView.setIsIndicator(true);
+
+        RatingBar RatingView2 = (RatingBar) findViewById(R.id.rating);
+        RatingView2.setRating((float)Double.parseDouble(rating));
+        RatingView2.setIsIndicator(true);
 
         TextView AddressView = (TextView) findViewById(R.id.add);
+        Log.v("address", add);
         AddressView.setText(add);
+
         fullView = (View)findViewById(R.id.rest_info);
         fullView.setOnTouchListener(imageViewSwiped);
 
@@ -76,12 +88,12 @@ public class RestInfoActivity extends AppCompatActivity{
             Pics.setImageBitmap(pic);
         }
 
-        String priceTag = "$";
-        TextView PriceView = (TextView) findViewById(R.id.price);
-        for (int i = 0;i<price;i++){
-            priceTag+="$";
-        }
-        PriceView.setText(priceTag);
+//        String priceTag = "$";
+//        TextView PriceView = (TextView) findViewById(R.id.price);
+//        for (int i = 0;i<price;i++){
+//            priceTag+="$";
+//        }
+//        PriceView.setText(priceTag);
     }
 
     View.OnTouchListener imageViewSwiped = new OnSwipeTouchListener() {
