@@ -86,18 +86,24 @@ public class RestInfoActivity extends AppCompatActivity{
 
     View.OnTouchListener imageViewSwiped = new OnSwipeTouchListener() {
         @Override
-        public void onSwipeLeft() {
-            Intent intent = new Intent(RestInfoActivity.this, ChooseOneActivity.class);
-            startActivity(intent);
+        public void onSwipeRight() {
+              onBackPressed();
+//            Intent intent = new Intent(RestInfoActivity.this, ChooseOneActivity.class);
+//            startActivity(intent);
         }
         @Override
-        public void onSwipeRight() {
+        public void onSwipeLeft() {
 
             Intent intent = new Intent(RestInfoActivity.this, ProfileActivity.class);
             intent.putExtra("activity","RestInfoActivity");
             startActivity(intent);
         }
     };
+
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
 
     /*@Override
     public void onClick(View v) {

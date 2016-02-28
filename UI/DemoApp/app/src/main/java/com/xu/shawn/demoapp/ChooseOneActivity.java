@@ -36,14 +36,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ChooseOneActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
+//    private Button btnchange1;
+//    private Button btnchange2;
     public GoogleApiClient mGoogleApiClient;
     public LocationListener locationListener;
     public LocationManager locationManager;
     public String searchMap = "";
     public String PassJson = "";
+    public double lati;
+    public double longi;
     public ArrayList<String> namelist = new ArrayList<>();
     public ArrayList<String> photolist = new ArrayList<>();
     public String restName1 = "Loading..";
@@ -56,8 +61,7 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
     public String[] PreList = {"japanese", "chinese","american","vietnamese","mexican","italian","french",
                                 "fastfood","thai"};
     public ProgressDialog dialog;
-    public boolean SetFirst = true;
-    private View fullView;
+    public boolean SetFirst = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +98,6 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         TextView rest2 = (TextView) findViewById(R.id.textView);
         rest2.setText(restName2);
 
-        fullView = (View)findViewById(R.id.choose_one);
-        fullView.setOnTouchListener(imageViewSwiped);
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0, locationListener);
 
@@ -153,25 +155,6 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
     public void onConnectionFailed(ConnectionResult connectionResult) {
     }
 
-    View.OnTouchListener imageViewSwiped = new OnSwipeTouchListener() {
-        @Override
-        public void onSwipeLeft() {
-            Intent intent = new Intent(ChooseOneActivity.this, PreferenceActivity.class);
-            startActivity(intent);
-        }
-        @Override
-        public void onSwipeRight() {
-
-            Intent intent = new Intent(ChooseOneActivity.this, ProfileActivity.class);
-            intent.putExtra("activity","ChooseOneActivity");
-            startActivity(intent);
-        }
-        @Override
-        public void onSwipeTop(){
-            Refresh();
-        }
-    };
-
     //Pick Restaruants
     public void RestaurantsPicker(){
         //LocationManager and listener
@@ -182,19 +165,22 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
                 // Called when a new location is found by the network location provider
                 // Use the new location to update the URL and call API
                 // Stop listens when done.
-                Log.v("location lat", ""+location.getLatitude());
-                Log.v("location long", ""+location.getLongitude());
+//                Log.v("location lat", ""+location.getLatitude());
+//                Log.v("location long", ""+location.getLongitude());
 
+                lati = location.getLatitude();
+                longi = location.getLongitude();
                 searchMap= "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+location.getLatitude()+","+location.getLongitude();
                 searchMap+="&keyword=";
 
-                for(int i = 0;i<PreList.length;i++){
-                    if(PreValue[i+2] > 50){
-                        searchMap += "|"+PreList[i];
-                        Log.v("preset", ""+PreValue[i+2]);
+                if(SetFirst == false) {
+                    for (int i = 0; i < PreList.length; i++) {
+                        if (PreValue[i + 2] > 50) {
+                            searchMap += "|" + PreList[i];
+//                            Log.v("preset", "" + PreValue[i + 2]);
+                        }
                     }
                 }
-
                 searchMap+="&radius=5000&types=restaurant&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
                 //Key word &keyword=japanese
                 Log.v("link", searchMap);
@@ -212,7 +198,7 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
     }
 
     //Reload this activity.
-    public void Refresh(){
+    public void Refresh(View v){
         Intent intent = getIntent();
         finish();
         startActivity(intent);
@@ -284,10 +270,10 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
                         }
                     }
 
-                    Log.v("photo", photoRef);
+//                    Log.v("photo", photoRef);
                     photolist.add(photoRef);
 
-                    Log.v("names ",name);
+//                    Log.v("names ",name);
                     restNameList.add(name);
                 }
 
@@ -299,26 +285,32 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
             namelist = restNameList;
 
             //Randomize restaurants, will fix after preference database is set.
-            RestIndex1 = (int)(Math.random() * namelist.size());
-            RestIndex2 =(int) Math.random() * namelist.size();
-            while(RestIndex2 == RestIndex1) {RestIndex2 =(int) Math.random() * namelist.size();}
+            if(SetFirst == false) {
+                RestIndex1 = (int) (Math.random() * namelist.size());
+            } else {
+                do {
+                    RestIndex2 = (int) (Math.random() * namelist.size());
+                } while (namelist.get(RestIndex1) == namelist.get(RestIndex2));
+            }
 
             String Reference = "";
 
             //Get the photo from the API.
             try {
-                if(photolist.get(RestIndex1) != "") {
-                    Reference = photolist.get(RestIndex1);
-                    String imageUrl1 = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + Reference + "&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
-                    bitmap1 = BitmapFactory.decodeStream((InputStream) new URL(imageUrl1).getContent());
-                    bitmap1 = Bitmap.createScaledBitmap(bitmap1, 100, 100, true);
-                }
-
-                if(photolist.get(RestIndex2) != "") {
-                    Reference = photolist.get(RestIndex2);
-                    String imageUrl2 = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + Reference + "&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
-                    bitmap2 = BitmapFactory.decodeStream((InputStream) new URL(imageUrl2).getContent());
-                    bitmap2 = Bitmap.createScaledBitmap(bitmap2, 100, 100, true);
+                if(SetFirst == false) {
+                    if (photolist.get(RestIndex1) != "") {
+                        Reference = photolist.get(RestIndex1);
+                        String imageUrl1 = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + Reference + "&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
+                        bitmap1 = BitmapFactory.decodeStream((InputStream) new URL(imageUrl1).getContent());
+                        bitmap1 = Bitmap.createScaledBitmap(bitmap1, 200, 200, true);
+                    }
+                } else {
+                    if (photolist.get(RestIndex2) != "") {
+                        Reference = photolist.get(RestIndex2);
+                        String imageUrl2 = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + Reference + "&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
+                        bitmap2 = BitmapFactory.decodeStream((InputStream) new URL(imageUrl2).getContent());
+                        bitmap2 = Bitmap.createScaledBitmap(bitmap2, 200, 200, true);
+                    }
                 }
 
             } catch (MalformedURLException e) {
@@ -343,13 +335,24 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
             }
 
             //Set up the textview with the text.
-            TextView rest1 = (TextView) findViewById(R.id.textView2);
-            rest1.setText(namelist.get(RestIndex1));
+            if(SetFirst == false) {
+                Log.v("here", "no");
+                TextView rest1 = (TextView) findViewById(R.id.textView2);
+                rest1.setText(namelist.get(RestIndex1));
+                SetFirst = true;
+                searchMap= "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+lati+","+longi;
+                searchMap+="&keyword=";
+                searchMap+="&radius=3000&types=restaurant&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
+                Log.v("link", searchMap);
+                new GetJson().execute(searchMap);
 
-            TextView rest2 = (TextView) findViewById(R.id.textView);
-            rest2.setText(namelist.get(RestIndex2));
-
-            dialog.hide();
+            } else {
+                Log.v("Second", "yes");
+                TextView rest2 = (TextView) findViewById(R.id.textView);
+                rest2.setText(namelist.get(RestIndex2));
+                dialog.hide();
+                stoplisten();
+            }
         }
     }
 }
