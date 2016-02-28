@@ -7,17 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-public class RestInfoActivity extends AppCompatActivity implements View.OnClickListener{
+public class RestInfoActivity extends AppCompatActivity{
 
-    private Button btnGoback;
+    //private Button btnGoback;
     public Bitmap pic;
     public String json;
     public int index;
@@ -25,7 +23,7 @@ public class RestInfoActivity extends AppCompatActivity implements View.OnClickL
     public String rating;
     public int price;
     public String add;
-
+    private View fullView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +31,8 @@ public class RestInfoActivity extends AppCompatActivity implements View.OnClickL
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        btnGoback = (Button)findViewById(R.id.Goback);
-        btnGoback.setOnClickListener(this);
+        //btnGoback = (Button)findViewById(R.id.Goback);
+        //btnGoback.setOnClickListener(this);
 
         Intent intent = getIntent();
         json = intent.getStringExtra("json");
@@ -70,6 +68,8 @@ public class RestInfoActivity extends AppCompatActivity implements View.OnClickL
 
         TextView AddressView = (TextView) findViewById(R.id.add);
         AddressView.setText(add);
+        fullView = (View)findViewById(R.id.rest_info);
+        fullView.setOnTouchListener(imageViewSwiped);
 
         if(pic != null) {
             ImageView Pics = (ImageView) findViewById(R.id.Picture);
@@ -84,10 +84,25 @@ public class RestInfoActivity extends AppCompatActivity implements View.OnClickL
         PriceView.setText(priceTag);
     }
 
-    @Override
+    View.OnTouchListener imageViewSwiped = new OnSwipeTouchListener() {
+        @Override
+        public void onSwipeLeft() {
+            Intent intent = new Intent(RestInfoActivity.this, ChooseOneActivity.class);
+            startActivity(intent);
+        }
+        @Override
+        public void onSwipeRight() {
+
+            Intent intent = new Intent(RestInfoActivity.this, ProfileActivity.class);
+            intent.putExtra("activity","RestInfoActivity");
+            startActivity(intent);
+        }
+    };
+
+    /*@Override
     public void onClick(View v) {
         Intent intent = new Intent(this, PreferenceActivity.class);
         startActivity(intent);
 
-    }
+    }*/
 }

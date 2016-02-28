@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -26,6 +25,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
     private Button btnGoChooseOne;
     private Button btnLoad;
+    private View fullView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +34,8 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        bars.add((SeekBar) findViewById(R.id.sB1));
-        bars.add((SeekBar) findViewById(R.id.sB2));
+        bars.add((SeekBar)findViewById(R.id.sB1));
+        bars.add((SeekBar)findViewById(R.id.sB2));
         bars.add((SeekBar)findViewById(R.id.sB3));
         bars.add((SeekBar)findViewById(R.id.sB4));
         bars.add((SeekBar)findViewById(R.id.sB5));
@@ -49,22 +49,23 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
         for(int i=0; i<2; i++){
             bars.get(i).setProgress(0);
-            progresses.add(bars.get(i).getProgress());
         }
         for(int i=2; i<12; i++){
             bars.get(i).setProgress(50);
-            progresses.add(bars.get(i).getProgress());
         }
 
-//        for(int i=0; i<12; i++){
-//            progresses.add(bars.get(i).getProgress());
-//        }
+        for(int i=0; i<12; i++){
+            progresses.add(bars.get(i).getProgress());
+        }
 
         btnGoChooseOne = (Button)findViewById(R.id.btnSubmit);
         btnGoChooseOne.setOnClickListener(this);
 
         btnLoad = (Button) findViewById(R.id.Load);
         btnLoad.setOnClickListener(this);
+
+        fullView = (View)findViewById(R.id.preference);
+        fullView.setOnTouchListener(imageViewSwiped);
 
         for(int i=0; i<12;i++) {
 
@@ -104,6 +105,20 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    View.OnTouchListener imageViewSwiped = new OnSwipeTouchListener() {
+        @Override
+        public void onSwipeLeft() {
+            Intent intent = new Intent(PreferenceActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        }
+        @Override
+        public void onSwipeRight() {
+            Intent intent = new Intent(PreferenceActivity.this, LoginActivity.class);
+            intent.putExtra("activity","PreferenceActivity");
+            startActivity(intent);
+        }
+    };
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -123,7 +138,9 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
                 }
                 update.setPref(toUpdate);
 
+
                 ref.child("user").child(authData.getUid()).setValue(update);
+
 
                 Toast.makeText(PreferenceActivity.this, "Preferences saved! ^o^",
                         Toast.LENGTH_SHORT).show();
@@ -135,7 +152,6 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
                 int[] values = new int[12];
                 for(int i=0; i<12; i++){
                     values[i] = progresses.get(i);
-                    Log.v("value",""+values[i]);
                 }
 
                 intent.putExtra("values", values);

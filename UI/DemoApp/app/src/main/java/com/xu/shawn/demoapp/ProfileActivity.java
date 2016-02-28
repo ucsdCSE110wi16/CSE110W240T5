@@ -1,13 +1,13 @@
 package com.xu.shawn.demoapp;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
@@ -22,9 +22,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 
     RadioButton button[] = new RadioButton[10];
-
-
+    private View fullView;
+    Intent intent;
     private Button btnGoPre;
+    String activity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +47,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         button[8] = (RadioButton)findViewById(R.id.radioButton9);
         button[9] =(RadioButton)findViewById(R.id.radioButton10);
 
+        fullView = (View)findViewById(R.id.profile);
+        fullView.setOnTouchListener(imageViewSwiped);
+
+        intent = getIntent();
+        activity = intent.getStringExtra("activity");
+
 
         //get information from server
         Firebase ref1 = new Firebase("https://luminous-inferno-8213.firebaseio.com/user");
@@ -62,25 +69,21 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
                     ArrayList<Integer> curr = tmp.getPref();
 
-                    for(int j=2; j<12;j++){
-                        int i = j-2;
-                        if(curr.get(j) < 25){
+                    for (int j = 2; j < 12; j++) {
+                        int i = j - 2;
+                        if (curr.get(j) < 25) {
                             button[i].setText("I HATE IT!");
                             button[i].refreshDrawableState();
-                        }
-                        else if(curr.get(j) < 50){
+                        } else if (curr.get(j) < 50) {
                             button[i].setText("I DON'T LIKE IT!");
                             button[i].refreshDrawableState();
-                        }
-                        else if(curr.get(j) == 50){
+                        } else if (curr.get(j) == 50) {
                             button[i].setText("WHATEVER!");
                             button[i].refreshDrawableState();
-                        }
-                        else if(curr.get(j) < 75){
+                        } else if (curr.get(j) < 75) {
                             button[i].setText("I LIKE IT!");
                             button[i].refreshDrawableState();
-                        }
-                        else{
+                        } else {
                             button[i].setText("MY FAVORITE!");
                             button[i].refreshDrawableState();
                         }
@@ -93,6 +96,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+        Drawable d = btnGoPre.getBackground();
+
+
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -102,6 +108,28 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 //            }
 //        });
     }
+
+    View.OnTouchListener imageViewSwiped = new OnSwipeTouchListener() {
+        @Override
+        public void onSwipeLeft() {
+            if(activity == "PreferenceActivity")
+            {
+                Intent intent = new Intent(ProfileActivity.this, PreferenceActivity.class);
+                startActivity(intent);
+            }
+            else if(activity == "ChooseOneActivity")
+            {
+                Intent intent = new Intent(ProfileActivity.this, ChooseOneActivity.class);
+                startActivity(intent);
+            }
+            else
+            {
+                Intent intent = new Intent(ProfileActivity.this, RestInfoActivity.class);
+                startActivity(intent);
+            }
+        }
+
+    };
 
     public void setText(ArrayList<String> list)
     {

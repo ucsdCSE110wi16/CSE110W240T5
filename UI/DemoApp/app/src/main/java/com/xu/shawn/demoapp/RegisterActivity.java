@@ -18,7 +18,7 @@ import java.util.*;
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button btnGoPre;
-
+    private View fullView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +29,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         btnGoPre = (Button)findViewById(R.id.signUp);
         btnGoPre.setOnClickListener(this);
 
+        fullView = (View)findViewById(R.id.register);
+        fullView.setOnTouchListener(imageViewSwiped);
+
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -38,6 +41,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 //            }
 //        });
     }
+
+    View.OnTouchListener imageViewSwiped = new OnSwipeTouchListener() {
+        @Override
+        public void onSwipeRight() {
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+    };
 
     @Override
     public void onClick(View v) {
