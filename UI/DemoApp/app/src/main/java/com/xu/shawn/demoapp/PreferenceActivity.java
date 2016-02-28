@@ -34,8 +34,8 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        bars.add((SeekBar)findViewById(R.id.sB1));
-        bars.add((SeekBar)findViewById(R.id.sB2));
+        bars.add((SeekBar) findViewById(R.id.sB1));
+        bars.add((SeekBar) findViewById(R.id.sB2));
         bars.add((SeekBar)findViewById(R.id.sB3));
         bars.add((SeekBar)findViewById(R.id.sB4));
         bars.add((SeekBar)findViewById(R.id.sB5));
@@ -49,14 +49,16 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
 
         for(int i=0; i<2; i++){
             bars.get(i).setProgress(0);
+            progresses.add(bars.get(i).getProgress());
         }
         for(int i=2; i<12; i++){
             bars.get(i).setProgress(50);
-        }
-
-        for(int i=0; i<12; i++){
             progresses.add(bars.get(i).getProgress());
         }
+
+//        for(int i=0; i<12; i++){
+//            progresses.add(bars.get(i).getProgress());
+//        }
 
         btnGoChooseOne = (Button)findViewById(R.id.btnSubmit);
         btnGoChooseOne.setOnClickListener(this);
@@ -121,9 +123,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
                 }
                 update.setPref(toUpdate);
 
-
                 ref.child("user").child(authData.getUid()).setValue(update);
-
 
                 Toast.makeText(PreferenceActivity.this, "Preferences saved! ^o^",
                         Toast.LENGTH_SHORT).show();
@@ -135,6 +135,7 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
                 int[] values = new int[12];
                 for(int i=0; i<12; i++){
                     values[i] = progresses.get(i);
+                    Log.v("value",""+values[i]);
                 }
 
                 intent.putExtra("values", values);
