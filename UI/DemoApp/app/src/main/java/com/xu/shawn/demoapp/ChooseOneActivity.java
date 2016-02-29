@@ -110,7 +110,9 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
             Intent intent = new Intent(this, RestInfoActivity.class);
             intent.putExtra("json", PassJson);
             intent.putExtra("index", RestIndex1);
+            intent.putExtra("name", restName1);
             intent.putExtra("pic", bitmap1);
+            Log.v("name", restName1);
             startActivity(intent);
         }
         else {
@@ -133,8 +135,10 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         {
             Intent intent = new Intent(this, RestInfoActivity.class);
             intent.putExtra("json", PassJson);
+            intent.putExtra("name", restName2);
             intent.putExtra("index", RestIndex2);
             intent.putExtra("pic", bitmap2);
+            Log.v("name", restName2);
             startActivity(intent);}
         else {
             AlertDialog alertDialog = new AlertDialog.Builder(ChooseOneActivity.this).create();
@@ -173,13 +177,17 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
                 searchMap= "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+location.getLatitude()+","+location.getLongitude();
                 searchMap+="&keyword=";
 
+
                 if(SetFirst == false) {
+
                     for (int i = 0; i < PreList.length; i++) {
                         if (PreValue[i + 2] > 50) {
                             searchMap += "|" + PreList[i];
 //                            Log.v("preset", "" + PreValue[i + 2]);
                         }
                     }
+                    int pricerange = PreValue[0]/25;
+                    searchMap+="&minprice=pricerange";
                 }
                 searchMap+="&radius=5000&types=restaurant&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
                 //Key word &keyword=japanese
@@ -218,6 +226,7 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         //Fetch Json Object
         private String json = null;
         private ArrayList<String> restNameList = new ArrayList<>();
+        private ArrayList<String> restPhotoList = new ArrayList<>();
 
         protected ArrayList<String> doInBackground(String... params) {
 
@@ -270,9 +279,9 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
                         }
                     }
 
+                    //Adding photo and name to the list
 //                    Log.v("photo", photoRef);
-                    photolist.add(photoRef);
-
+                    restPhotoList.add(photoRef);
 //                    Log.v("names ",name);
                     restNameList.add(name);
                 }
@@ -281,18 +290,22 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
                 Log.v("Throw", "Can't parse");
             }
 
-            //Put the restaurant names into a list.
+            //Put the restaurant names and photo into a list.
             namelist = restNameList;
+            photolist = restPhotoList;
 
             //Randomize restaurants, will fix after preference database is set.
             if(SetFirst == false) {
                 RestIndex1 = (int) (Math.random() * namelist.size());
+                restName1 = namelist.get(RestIndex1);
             } else {
                 do {
                     RestIndex2 = (int) (Math.random() * namelist.size());
+                    restName2 = namelist.get(RestIndex2);
                 } while (namelist.get(RestIndex1) == namelist.get(RestIndex2));
             }
 
+            //Set the string ref
             String Reference = "";
 
             //Get the photo from the API.

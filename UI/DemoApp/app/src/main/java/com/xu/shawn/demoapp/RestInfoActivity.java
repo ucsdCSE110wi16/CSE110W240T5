@@ -27,7 +27,6 @@ public class RestInfoActivity extends AppCompatActivity{
     public int price;
     public String add;
     private View fullView;
-    private MapView map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +42,7 @@ public class RestInfoActivity extends AppCompatActivity{
         json = intent.getStringExtra("json");
         index = intent.getIntExtra("index",0);
         pic=intent.getParcelableExtra("pic");
+        name=intent.getStringExtra("name");
 
         JSONObject jsonObject = null;
         try {
@@ -52,7 +52,7 @@ public class RestInfoActivity extends AppCompatActivity{
             //Get the name of the restuarants.
 
             JSONObject temp = jsonArray.getJSONObject(index);
-            name = temp.optString("name").toString();
+            //name = temp.optString("name").toString();
             rating = temp.optString("rating").toString();
             price = temp.optInt("price_level");
             add = temp.optString("vicinity").toString();
@@ -69,11 +69,15 @@ public class RestInfoActivity extends AppCompatActivity{
         nameView.setText(name);
 
         RatingBar RatingView = (RatingBar) findViewById(R.id.Price);
-        RatingView.setRating((float)price);
+        if(price >= 0){
+            RatingView.setRating((float)price);
+        }
         RatingView.setIsIndicator(true);
 
         RatingBar RatingView2 = (RatingBar) findViewById(R.id.rating);
-        RatingView2.setRating((float)Double.parseDouble(rating));
+        if(rating != "") {
+            RatingView2.setRating((float) Double.parseDouble(rating));
+        }
         RatingView2.setIsIndicator(true);
 
         TextView AddressView = (TextView) findViewById(R.id.add);
