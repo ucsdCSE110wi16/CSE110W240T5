@@ -63,6 +63,9 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
     public ProgressDialog dialog;
     public boolean SetFirst = false;
 
+    private View fullView;
+    private View fullView2;
+    private View fullView3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +101,13 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         TextView rest2 = (TextView) findViewById(R.id.textView);
         rest2.setText(restName2);
 
+        fullView = (View)findViewById(R.id.profile);
+        fullView.setOnTouchListener(imageViewSwiped);
+
+        fullView2 = (View)findViewById(R.id.imgViewPic);
+        fullView2.setOnTouchListener(imageViewSwiped2);
+        fullView3 = (View)findViewById(R.id.imgViewPic2);
+        fullView3.setOnTouchListener(imageViewSwiped2);
         // Register the listener with the Location Manager to receive location updates
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0, locationListener);
 
@@ -155,6 +165,29 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    View.OnTouchListener imageViewSwiped = new OnSwipeTouchListener() {
+        @Override
+        public void onSwipeLeft() {
+            Intent intent = new Intent(ChooseOneActivity.this, PreferenceActivity.class);
+            startActivity(intent);
+        }
+        @Override
+        public void onSwipeRight() {
+
+            Intent intent = new Intent(ChooseOneActivity.this, ProfileActivity.class);
+            intent.putExtra("activity", "ChooseOneActivity");
+            startActivity(intent);
+        }
+    };
+
+
+    View.OnTouchListener imageViewSwiped2 = new OnSwipeTouchListener() {
+        @Override
+        public void onSwipeRight() {
+            Refresh();
+        }
+
+    };
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
     }
@@ -206,7 +239,7 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
     }
 
     //Reload this activity.
-    public void Refresh(View v){
+    public void Refresh(){
         Intent intent = getIntent();
         finish();
         startActivity(intent);
