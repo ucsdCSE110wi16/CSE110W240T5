@@ -80,6 +80,15 @@ public class ApplicationTest{
         //assertNotNull(nextActivity);
 
         Espresso.onView(ViewMatchers.withId(R.id.tV1)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+        
+                Espresso.onView(ViewMatchers.withId(R.id.tV1)).check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+        onView(withId(R.id.sB2))
+                .perform(ViewActions.swipeLeft());
+        onView(withId(R.id.sB2))
+                .perform(ViewActions.swipeRight());
+        onView(withId(R.id.btnSubmit))
+                .perform(ViewActions.scrollTo(), click());
+        //onView(withId(R.id.btnSubmit)).perform(click());
 
 
     }
