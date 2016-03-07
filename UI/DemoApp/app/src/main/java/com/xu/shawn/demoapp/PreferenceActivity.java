@@ -108,16 +108,22 @@ public class PreferenceActivity extends AppCompatActivity implements View.OnClic
     View.OnTouchListener imageViewSwiped = new OnSwipeTouchListener() {
         @Override
         public void onSwipeLeft() {
-            Intent intent = new Intent(PreferenceActivity.this, ProfileActivity.class);
-            startActivity(intent);
+            onBackPressed();
+//            Intent intent = new Intent(PreferenceActivity.this, ProfileActivity.class);
+//            startActivity(intent);
         }
         @Override
         public void onSwipeRight() {
-            Intent intent = new Intent(PreferenceActivity.this, LoginActivity.class);
-            intent.putExtra("activity","PreferenceActivity");
-            startActivity(intent);
+//            Intent intent = new Intent(PreferenceActivity.this, LoginActivity.class);
+//            intent.putExtra("activity","PreferenceActivity");
+//            startActivity(intent);
         }
     };
+
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
 
     @Override
     public void onClick(View v) {

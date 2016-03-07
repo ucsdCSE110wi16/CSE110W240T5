@@ -1,17 +1,22 @@
 package com.xu.shawn.demoapp;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -40,8 +45,6 @@ import java.util.Random;
 
 public class ChooseOneActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener{
 
-//    private Button btnchange1;
-//    private Button btnchange2;
     public GoogleApiClient mGoogleApiClient;
     public LocationListener locationListener;
     public LocationManager locationManager;
@@ -62,6 +65,14 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
                                 "fastfood","thai"};
     public ProgressDialog dialog;
     public boolean SetFirst = false;
+
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
+
+    private static final String[] LOCATION_PERMS={
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +110,26 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         rest2.setText(restName2);
 
         // Register the listener with the Location Manager to receive location updates
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 500, locationListener);
 
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            @Override
+            public void onShake(int count) {
+				/*
+				 * The following method, "handleShakeEvent(count):" is a stub //
+				 * method you would use to setup whatever you want done once the
+				 * device has been shook.
+				 */
+                if(count > 1){
+                    Refresh();
+                }
+            }
+        });
     }
 
     @Override
@@ -169,8 +198,6 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
                 // Called when a new location is found by the network location provider
                 // Use the new location to update the URL and call API
                 // Stop listens when done.
-//                Log.v("location lat", ""+location.getLatitude());
-//                Log.v("location long", ""+location.getLongitude());
 
                 lati = location.getLatitude();
                 longi = location.getLongitude();
@@ -186,8 +213,9 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
 //                            Log.v("preset", "" + PreValue[i + 2]);
                         }
                     }
-                    int pricerange = PreValue[0]/25;
-                    searchMap+="&minprice=pricerange";
+                    int pricerange = PreValue[0]/50;
+                    searchMap+="&minprice="+pricerange;
+                    Log.v("Pricerange", ""+pricerange);
                 }
                 searchMap+="&radius=5000&types=restaurant&key=AIzaSyD5smM39XCy0kjibJdhNoAnlPcqTynkObM";
                 //Key word &keyword=japanese
@@ -199,14 +227,17 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
 
             public void onStatusChanged(String provider, int status, Bundle extras) {}
 
-            public void onProviderEnabled(String provider) {}
+            public void onProviderEnabled(String provider) {Log.v("Enable", "Provider");}
 
-            public void onProviderDisabled(String provider) { Log.v(" what ", "what");}
+            public void onProviderDisabled(String provider) { Log.v(" Disable ", "Provider");}
         };
     }
 
+    public void Shake(View view){
+        Refresh();
+    }
     //Reload this activity.
-    public void Refresh(View v){
+    public void Refresh(){
         Intent intent = getIntent();
         finish();
         startActivity(intent);
@@ -217,9 +248,23 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
         locationManager.removeUpdates(locationListener);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Add the following line to register the Session Manager Listener onResume
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+    }
+
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
+    }
+
+    @Override
+    public void onPause() {
+        // Add the following line to unregister the Sensor Manager onPause
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
     }
 
     class GetJson extends AsyncTask<String, Void, ArrayList<String>> {
@@ -295,6 +340,7 @@ public class ChooseOneActivity extends AppCompatActivity implements View.OnClick
             photolist = restPhotoList;
 
             //Randomize restaurants, will fix after preference database is set.
+            //SetFirst means the first one is set.
             if(SetFirst == false) {
                 RestIndex1 = (int) (Math.random() * namelist.size());
                 restName1 = namelist.get(RestIndex1);

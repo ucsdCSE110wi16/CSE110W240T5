@@ -2,6 +2,7 @@ package com.xu.shawn.demoapp;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -35,9 +36,6 @@ public class RestInfoActivity extends AppCompatActivity{
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //btnGoback = (Button)findViewById(R.id.Goback);
-        //btnGoback.setOnClickListener(this);
-
         Intent intent = getIntent();
         json = intent.getStringExtra("json");
         index = intent.getIntExtra("index",0);
@@ -50,7 +48,6 @@ public class RestInfoActivity extends AppCompatActivity{
             JSONArray jsonArray = jsonObject.optJSONArray("results");
 
             //Get the name of the restuarants.
-
             JSONObject temp = jsonArray.getJSONObject(index);
             //name = temp.optString("name").toString();
             rating = temp.optString("rating").toString();
@@ -92,27 +89,22 @@ public class RestInfoActivity extends AppCompatActivity{
             Pics.setImageBitmap(pic);
         }
 
-//        String priceTag = "$";
-//        TextView PriceView = (TextView) findViewById(R.id.price);
-//        for (int i = 0;i<price;i++){
-//            priceTag+="$";
-//        }
-//        PriceView.setText(priceTag);
+    }
+
+    public void Direction(View v){
+        Uri gmmIntentUri = Uri.parse("google.navigation:q="+name);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
     }
 
     View.OnTouchListener imageViewSwiped = new OnSwipeTouchListener() {
         @Override
         public void onSwipeRight() {
-              onBackPressed();
-//            Intent intent = new Intent(RestInfoActivity.this, ChooseOneActivity.class);
-//            startActivity(intent);
         }
         @Override
         public void onSwipeLeft() {
-
-            Intent intent = new Intent(RestInfoActivity.this, ProfileActivity.class);
-            intent.putExtra("activity","RestInfoActivity");
-            startActivity(intent);
+            onBackPressed();
         }
     };
 
@@ -121,10 +113,4 @@ public class RestInfoActivity extends AppCompatActivity{
         this.finish();
     }
 
-    /*@Override
-    public void onClick(View v) {
-        Intent intent = new Intent(this, PreferenceActivity.class);
-        startActivity(intent);
-
-    }*/
 }
