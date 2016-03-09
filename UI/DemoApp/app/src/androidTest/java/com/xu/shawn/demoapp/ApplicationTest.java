@@ -112,7 +112,6 @@ public class ApplicationTest{
 
     @Test
     public void shake(){
-
         preference();
         ActivityMonitor activityMonitor = getInstrumentation().addMonitor(LoginActivity.class.getName(), null, false);
         LoginActivity nextActivity =
@@ -123,4 +122,12 @@ public class ApplicationTest{
                 .perform(click());
 
     }
+
+    @Test
+    public void showway(){
+        chooseOne();
+        onView(withId(R.id.button)).perform(click());
+    }
+
+
 }
